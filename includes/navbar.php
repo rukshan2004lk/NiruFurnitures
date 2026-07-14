@@ -76,7 +76,6 @@ function navLink(string $href, string $label, string $current): string
             <!-- Nav Links -->
             <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-4">
                 <?= navLink(SITE_URL . '/shop.php', 'Products', $currentPath) ?>
-                <?= navLink(SITE_URL . '/dashboard.php', 'Dashboard', $currentPath) ?>
                 <?= navLink(SITE_URL . '/contact.php', 'Contact', $currentPath) ?>
             </ul>
 
@@ -103,43 +102,13 @@ function navLink(string $href, string $label, string $current): string
                     <?php endif; ?>
                 </a>
 
-                <!-- User Dropdown -->
+                <!-- User Profile Link -->
                 <?php if (isLoggedIn()): ?>
-                    <div class="dropdown ms-1">
-                        <button class="btn user-avatar-btn dropdown-toggle d-flex align-items-center gap-2"
-                            id="userDropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="<?= avatarUrl($_SESSION['user_avatar'] ?? null) ?>"
-                                alt="<?= e($_SESSION['user_name'] ?? 'User') ?>" class="user-avatar-small">
-                            <span class="d-none d-xl-inline"><?= e(explode(' ', $_SESSION['user_name'] ?? 'User')[0]) ?></span>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end user-dropdown" aria-labelledby="userDropdown">
-                            <li class="dropdown-header">
-                                <strong><?= e($_SESSION['user_name'] ?? '') ?></strong>
-                                <small class="d-block text-muted"><?= e($_SESSION['user_email'] ?? '') ?></small>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="dashboard.php"><i
-                                        class="bi bi-speedometer2 me-2"></i>Dashboard</a></li>
-                            <li><a class="dropdown-item" href="profile.php"><i class="bi bi-person me-2"></i>Profile</a>
-                            </li>
-                            <li><a class="dropdown-item" href="wishlist.php"><i class="bi bi-heart me-2"></i>Wishlist</a>
-                            </li>
-                            <?php if (isAdmin()): ?>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item text-primary" href="<?= SITE_URL ?>/admin/dashboard.php"><i
-                                            class="bi bi-shield-check me-2"></i>Admin Panel</a></li>
-                            <?php endif; ?>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item text-danger" href="logout.php"><i
-                                        class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
-                        </ul>
-                    </div>
+                    <a href="dashboard.php" class="btn user-avatar-btn d-flex align-items-center gap-2 ms-1">
+                        <img src="<?= avatarUrl($_SESSION['user_avatar'] ?? null) ?>"
+                            alt="<?= e($_SESSION['user_name'] ?? 'User') ?>" class="user-avatar-small">
+                        <span class="d-none d-xl-inline"><?= e(explode(' ', $_SESSION['user_name'] ?? 'User')[0]) ?></span>
+                    </a>
                 <?php else: ?>
                     <a href="login.php" class="navbar-icon-btn" aria-label="Account">
                         <i class="bi bi-person-circle"></i>
@@ -150,7 +119,7 @@ function navLink(string $href, string $label, string $current): string
             <!-- Mobile: user links -->
             <div class="d-lg-none border-top mt-2 pt-2">
                 <?php if (isLoggedIn()): ?>
-                    <a class="dropdown-item py-2" href="dashboard.php"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a>
+                    <a class="dropdown-item py-2" href="dashboard.php"><i class="bi bi-person me-2"></i>Profile</a>
                     <a class="dropdown-item py-2" href="wishlist.php"><i class="bi bi-heart me-2"></i>Wishlist</a>
                     <a class="dropdown-item py-2 text-danger" href="logout.php"><i
                             class="bi bi-box-arrow-right me-2"></i>Logout</a>

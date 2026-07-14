@@ -81,9 +81,7 @@ $extraJs = $extraJs ?? [];
     <i class="bi bi-chevron-up"></i>
 </button>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmMpZJKpABiyY8PGpaDV+VhE0pN/"
-    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 <script>
     window.APP_CSRF = "<?= e(csrfToken()) ?>";
