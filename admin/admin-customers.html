@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NiRu Furnitures - Admin Customers</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+  <div class="admin-mobile-topbar">
+    <div class="fw-bold fs-5 text-white">NiRu Admin</div>
+    <button class="btn btn-outline-light btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#adminMobileSidebar" aria-controls="adminMobileSidebar">
+      <i class="bi bi-list fs-5"></i> Menu
+    </button>
+  </div>
+
+  <div class="offcanvas offcanvas-start bg-dark text-light" tabindex="-1" id="adminMobileSidebar" aria-labelledby="adminMobileSidebarLabel">
+    <div class="offcanvas-header border-bottom border-secondary">
+      <h5 class="offcanvas-title text-white fw-bold" id="adminMobileSidebarLabel">Admin Navigation</h5>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body p-3">
+      <ul class="nav flex-column gap-2 mb-4">
+        <li class="nav-item"><a href="admin-dashboard.html" class="nav-link text-white-50"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a></li>
+        <li class="nav-item"><a href="admin-products.html" class="nav-link text-white-50"><i class="bi bi-box-seam me-2"></i>Products</a></li>
+        <li class="nav-item"><a href="admin-orders.html" class="nav-link text-white-50"><i class="bi bi-cart me-2"></i>Orders</a></li>
+        <li class="nav-item"><a href="admin-customers.html" class="nav-link active fw-bold text-white"><i class="bi bi-people me-2"></i>Customers</a></li>
+        <li class="nav-item"><a href="admin-settings.html" class="nav-link text-white-50"><i class="bi bi-gear me-2"></i>Settings</a></li>
+        <li class="nav-item"><hr class="dropdown-divider border-secondary"></li>
+        <li class="nav-item"><a href="../index.html" class="nav-link text-warning"><i class="bi bi-box-arrow-left me-2"></i>Exit to Storefront</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <aside class="admin-sidebar">
+    <div class="admin-brand">
+      <h2>Admin Panel</h2>
+      <small>Manage NiRu Furnitures</small>
+    </div>
+
+    <ul class="admin-menu">
+      <li>
+        <a href="admin-dashboard.html" class="admin-link">
+          <i class="bi bi-speedometer2"></i> Dashboard
+        </a>
+      </li>
+      <li>
+        <a href="admin-products.html" class="admin-link">
+          <i class="bi bi-box-seam"></i> Products
+        </a>
+      </li>
+      <li>
+        <a href="admin-orders.html" class="admin-link">
+          <i class="bi bi-cart"></i> Orders
+        </a>
+      </li>
+      <li>
+        <a href="admin-customers.html" class="admin-link active">
+          <i class="bi bi-people"></i> Customers
+        </a>
+      </li>
+      <li>
+        <a href="admin-settings.html" class="admin-link">
+          <i class="bi bi-gear"></i> Settings
+        </a>
+      </li>
+    </ul>
+
+    <div class="px-3 mt-auto">
+      <a href="../index.html" class="admin-link">
+        <i class="bi bi-box-arrow-left"></i> Log out
+      </a>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+    
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-5">
+      <div>
+        <h1 class="fs-3 fw-normal mb-1" style="color: var(--niru-primary);">Customer Management</h1>
+        <p class="text-muted mb-0">Oversee your artisanal community and wholesale partners.</p>
+      </div>
+
+      <div class="d-flex gap-2">
+        <button class="btn btn-light border d-flex align-items-center gap-2 px-3 py-2" style="background-color: #eae7e7; border-color: var(--niru-border);">
+          <i class="bi bi-funnel"></i> Filter
+        </button>
+        <button class="btn btn-dark d-flex align-items-center gap-2 px-4 py-2" style="background-color: var(--niru-primary);">
+          <i class="bi bi-person-plus"></i> Add Customer
+        </button>
+      </div>
+    </div>
+
+    <div class="customer-table-card mb-5">
+      
+      <div class="toolbar-customer">
+        <div class="search-input-customer">
+          <i class="bi bi-search"></i>
+          <input type="text" class="form-control" placeholder="Search by name, email or ID...">
+        </div>
+
+        <div class="d-flex align-items-center gap-2">
+          <button class="btn btn-sm text-dark p-1" aria-label="Refresh"><i class="bi bi-arrow-clockwise fs-5"></i></button>
+          <button class="btn btn-sm text-dark p-1" aria-label="More Options"><i class="bi bi-three-dots-vertical fs-5"></i></button>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-customers mb-0">
+          <thead>
+            <tr>
+              <th>PROFILE PICTURE</th>
+              <th>CUSTOMER NAME</th>
+              <th>ROLE</th>
+              <th>EMAIL ADDRESS</th>
+              <th>REGISTRATION DATE</th>
+              <th>STATUS</th>
+              <th class="text-end">ACTIONS</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+            <tr>
+              <td>
+                <img src="https://picsum.photos/id/1027/100/100" alt="Nisala Anjana" class="avatar-circle-customer">
+              </td>
+              <td>
+                <div class="fw-semibold" style="color: var(--niru-primary);">Nisala Anjana</div>
+                <small class="text-muted" style="font-size: 11px;">ID: #CU-8921</small>
+              </td>
+              <td><span class="role-vip">VIP</span></td>
+              <td class="text-muted">nisalaa@gmail.com</td>
+              <td class="text-muted">Oct 12, 2023</td>
+              <td><span class="status-dot-active">Active</span></td>
+              <td class="text-end">
+                <button class="btn btn-sm btn-link text-dark p-1" aria-label="Actions"><i class="bi bi-three-dots"></i></button>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <img src="https://picsum.photos/id/1005/100/100" alt="Julian Thorne" class="avatar-circle-customer">
+              </td>
+              <td>
+                <div class="fw-semibold" style="color: var(--niru-primary);">Julian Thorne</div>
+                <small class="text-muted" style="font-size: 11px;">ID: #CU-4432</small>
+              </td>
+              <td><span class="role-wholesaler">WHOLESALER</span></td>
+              <td class="text-muted">julian@thorne-interiors.co</td>
+              <td class="text-muted">Jan 05, 2024</td>
+              <td><span class="status-dot-active">Active</span></td>
+              <td class="text-end">
+                <button class="btn btn-sm btn-link text-dark p-1" aria-label="Actions"><i class="bi bi-three-dots"></i></button>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <img src="https://picsum.photos/id/1062/100/100" alt="Sienna Miller" class="avatar-circle-customer">
+              </td>
+              <td>
+                <div class="fw-semibold" style="color: var(--niru-primary);">Sienna Miller</div>
+                <small class="text-muted" style="font-size: 11px;">ID: #CU-2190</small>
+              </td>
+              <td><span class="role-customer">CUSTOMER</span></td>
+              <td class="text-muted">sienna.m@lifestyle.net</td>
+              <td class="text-muted">Feb 28, 2024</td>
+              <td><span class="status-dot-inactive">Inactive</span></td>
+              <td class="text-end">
+                <button class="btn btn-sm btn-link text-dark p-1" aria-label="Actions"><i class="bi bi-three-dots"></i></button>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <img src="https://picsum.photos/id/1074/100/100" alt="Arthur Vance" class="avatar-circle-customer">
+              </td>
+              <td>
+                <div class="fw-semibold" style="color: var(--niru-primary);">Arthur Vance</div>
+                <small class="text-muted" style="font-size: 11px;">ID: #CU-7712</small>
+              </td>
+              <td><span class="role-vip">VIP</span></td>
+              <td class="text-muted">avance@studio-arch.com</td>
+              <td class="text-muted">Nov 19, 2023</td>
+              <td><span class="status-dot-active">Active</span></td>
+              <td class="text-end">
+                <button class="btn btn-sm btn-link text-dark p-1" aria-label="Actions"><i class="bi bi-three-dots"></i></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="d-flex align-items-center justify-content-between p-3 bg-light border-top">
+        <small class="text-muted">Showing 4 of 1,284 entries</small>
+        <ul class="pagination pagination-sm mb-0">
+          <li class="page-item disabled"><a class="page-link" href="#"><i class="bi bi-chevron-left"></i></a></li>
+          <li class="page-item active"><a class="page-link" href="#" style="background-color: var(--niru-primary); border-color: var(--niru-primary);">1</a></li>
+          <li class="page-item"><a class="page-link text-dark" href="#">2</a></li>
+          <li class="page-item"><a class="page-link text-dark" href="#">3</a></li>
+          <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
+          <li class="page-item"><a class="page-link text-dark" href="#">42</a></li>
+          <li class="page-item"><a class="page-link text-dark" href="#"><i class="bi bi-chevron-right"></i></a></li>
+        </ul>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
