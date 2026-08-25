@@ -1,27 +1,33 @@
+<?php
+include 'connection.php';
+
+?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NiRu Furnitures - Welcome Back</title>
-  
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-  
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-  
+
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
+
 <body>
 
   <header>
     <nav class="navbar navbar-expand-lg fixed-top px-3 px-lg-5">
       <div class="container-fluid max-w-1320">
         <a class="brand-logo me-4" href="index.html">NiRu</a>
-        
+
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -40,7 +46,7 @@
               <i class="bi bi-search"></i>
               <input type="text" class="form-control" placeholder="Search furniture...">
             </div>
-            
+
             <a href="cart.html" class="icon-btn text-decoration-none position-relative" aria-label="Cart">
               <i class="bi bi-bag"></i>
               <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 10px;">2</span>
@@ -54,9 +60,13 @@
                 <li><a class="dropdown-item py-2" href="user/dashboard.html"><i class="bi bi-speedometer2 me-2"></i>My Dashboard</a></li>
                 <li><a class="dropdown-item py-2" href="user/orders.html"><i class="bi bi-box-seam me-2"></i>My Orders</a></li>
                 <li><a class="dropdown-item py-2" href="user/wishlist.html"><i class="bi bi-heart me-2"></i>Wishlist</a></li>
-                <li><hr class="dropdown-divider"></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
                 <li><a class="dropdown-item py-2" href="admin/admin-dashboard.html"><i class="bi bi-shield-lock me-2"></i>Admin Panel</a></li>
-                <li><hr class="dropdown-divider"></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
                 <li><a class="dropdown-item py-2 text-danger" href="login.html"><i class="bi bi-box-arrow-right me-2"></i>Sign In / Register</a></li>
               </ul>
             </div>
@@ -68,7 +78,7 @@
 
   <main style="padding-top: 120px; padding-bottom: 80px;">
     <div class="container-xl">
-      
+
       <div class="auth-card">
         <div class="text-center mb-4">
           <h1 class="fs-2 fw-semibold mb-2" style="color: var(--niru-primary);">Welcome Back</h1>
@@ -76,23 +86,23 @@
         </div>
 
         <form onsubmit="event.preventDefault(); window.location.href='user/dashboard.html';" class="d-flex flex-column gap-3 mb-4">
-          
+
           <div>
-            <label for="loginEmail" class="form-label-custom">Email or Username</label>
+            <label for="email" class="form-label-custom">Email</label>
             <div class="input-icon-group">
               <i class="bi bi-envelope"></i>
-              <input type="text" class="form-control" id="loginEmail" placeholder="nisalaa@gmail.com" value="nisalaa@gmail.com">
+              <input type="text" class="form-control" id="email" placeholder="Enter your Email" value="">
             </div>
           </div>
 
           <div>
             <div class="d-flex justify-content-between align-items-center mb-1">
-              <label for="loginPassword" class="form-label-custom mb-0">Password</label>
+              <label for="password" class="form-label-custom mb-0">Password</label>
               <a href="#" class="small text-decoration-none" style="color: var(--niru-secondary);">Forgot Password?</a>
             </div>
             <div class="input-icon-group">
               <i class="bi bi-lock"></i>
-              <input type="password" class="form-control" id="loginPassword" value="••••••••">
+              <input type="password" class="form-control" id="password" placeholder="Enter your Password">
             </div>
           </div>
 
@@ -103,24 +113,27 @@
             </label>
           </div>
 
-          <button type="submit" class="btn-auth-primary py-3">
+          <button type="button" onclick="signIn();" class="btn-auth-primary py-3">
             Sign In to Customer Dashboard <i class="bi bi-arrow-right ms-2"></i>
           </button>
         </form>
-
+        <div id="msgdiv" class="d-none">
+          <div id="msg" role="alert"></div>
+        </div>
         <div class="text-center mb-3">
-          <a href="admin/admin-dashboard.html" class="btn btn-outline-dark w-100 py-2 rounded-3 small">
+          <a onclick="adminSignIn();" class="btn btn-outline-dark w-100 py-2 rounded-3 small">
             <i class="bi bi-shield-lock me-2"></i>Sign In to Admin Panel
           </a>
         </div>
 
         <div class="text-center pt-2">
           <p class="small mb-0" style="color: var(--niru-body-text);">
-            Don't have an account? <a href="register.html" class="fw-semibold text-decoration-none" style="color: var(--niru-primary);">Create one</a>
+            Don't have an account? <a href="register.php" class="fw-semibold text-decoration-none" style="color: var(--niru-primary);">Create one</a>
           </p>
         </div>
 
       </div>
+
 
     </div>
   </main>
@@ -128,7 +141,7 @@
   <footer>
     <div class="container-xl">
       <div class="row g-4">
-        
+
         <div class="col-12 col-lg-4">
           <h3 class="fs-4 fw-bold mb-3" style="color: var(--niru-primary);">NiRu</h3>
           <p class="small mb-0" style="color: var(--niru-body-text);">
@@ -158,4 +171,5 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="assets/js/script.js"></script>
 </body>
-</html>
+
+</html>\

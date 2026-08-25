@@ -10,7 +10,6 @@ class Database
     public static function setUpConnection()
     {
         if (!isset(Database::$connection)) {
-
             Database::$connection = new mysqli(
                 "localhost",
                 "root",
@@ -22,24 +21,32 @@ class Database
             if (Database::$connection->connect_error) {
                 die("Database Connection Failed: " . Database::$connection->connect_error);
             }
-
-            echo "Database Connection Successful";
         }
     }
 
     public static function iud($q)
     {
         Database::setUpConnection();
-        return Database::$connection->query($q);
+        $result = Database::$connection->query($q);
+        
+        // If query fails, print the exact MySQL error so you can see why it didn't save
+        if (!$result) {
+            die("SQL Error: " . Database::$connection->error . " | Query: " . $q);
+        }
+        
+        return $result;
     }
 
     public static function search($q)
     {
         Database::setUpConnection();
-        return Database::$connection->query($q);
+        $result = Database::$connection->query($q);
+
+        if (!$result) {
+            die("SQL Error: " . Database::$connection->error . " | Query: " . $q);
+        }
+
+        return $result;
     }
 }
-
-Database::setUpConnection();
-
 ?>
