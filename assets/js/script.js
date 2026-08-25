@@ -1,21 +1,5 @@
 let googleTokenClient;
 
-// Helper to initialize Google Token Client safely
-function initGoogleAuth() {
-  if (typeof google !== "undefined" && google.accounts && google.accounts.oauth2) {
-    if (!googleTokenClient) {
-      googleTokenClient = google.accounts.oauth2.initTokenClient({
-        client_id: "164813452523-n69vd85cdlc47c531cmj4aejth9ss2as.apps.googleusercontent.com",
-        scope: "email profile openid",
-        callback: function (tokenResponse) {
-          if (tokenResponse.access_token) {
-            sendOAuthData("google", tokenResponse.access_token);
-          }
-        },
-      });
-    }
-  }
-}
 
 document.addEventListener("DOMContentLoaded", function () {
   // 1. Price Range Slider Display
@@ -148,7 +132,7 @@ document.addEventListener("DOMContentLoaded", function () {
     fadeInObserver.observe(el);
   });
 
-
+  });
 
 
 function signup() {
@@ -293,4 +277,91 @@ function adminSignIn() {
 
   request.open("POST", "adminLoginProcess.php", true);
   request.send(form);
+}
+
+function updateSetting() {
+  var fName = document.getElementById("fName");
+  var lName = document.getElementById("lName");
+  var line1 = document.getElementById("line1");
+  var line2 = document.getElementById("line2");
+  var city = document.getElementById("city");
+  var pCode = document.getElementById("postalCode"); // Matched to id="postalCode"
+  var mobile = document.getElementById("phoneNumber");
+
+  // Safety check to ensure elements exist in the DOM
+  if (!fName || !lName || !line1 || !pCode || !mobile) {
+    alert("Required form elements are missing.");
+    return;
+  }
+
+  var form = new FormData();
+  form.append("f", fName.value);
+  form.append("l", lName.value);
+  form.append("l1", line1.value);
+  form.append("l2", line2 ? line2.value : "");
+  form.append("c", city ? city.value : "");
+  form.append("pc", pCode.value);
+  form.append("m", mobile.value);
+
+  const request = new XMLHttpRequest();
+
+  request.onreadystatechange = function () {
+    if (request.readyState === 4 && request.status === 200) {
+      const response = request.responseText.trim();
+
+      if (response === "success") {
+        window.location.reload();
+      } else {
+        alert(response);
+      }
+    }
+  };
+
+  request.open("POST", "settingProcess.php", true);
+  request.send(form);
+}
+
+
+function passwordChange(){
+
+  var cPassword = document.getElementById("currentPassword");
+  var nPassword = document.getElementById("newPassword");
+  var vPassword = document.getElementById("confirmNewPassword");
+
+ if (nPassword.value !== vPassword.value) {
+    if (msg) {
+      msg.innerHTML = "Confirm password did not match.";
+      msg.className = "alert alert-danger";
+    }
+    if (msgdiv) {
+      msgdiv.className = "d-block";
+    }
+    return;
+  }
+  const form = new FormData();
+
+  form.append("c",cPassword.value);
+  form.append("n",nPassword.value);
+
+
+  const request = new XMLHttpRequest()
+
+   request.onreadystatechange = function () {
+    if (request.readyState === 4 && request.status === 200) {
+      const response = request.responseText.trim();
+
+      if (response === "success") {
+        alert("Password updated successfully!");
+        cPassword.value = "";
+        nPassword.value = "";
+        vPassword.value = "";
+      } else {
+        alert(response);
+      }
+    }
+  };
+
+  request.open("POST","passwordChange.php",true);
+  request.send(form);
+
 }
