@@ -12,6 +12,11 @@ document.addEventListener("DOMContentLoaded", function () {
         displaySpan.textContent = `Rs. ${parseInt(val).toLocaleString()}+`;
       }
     });
+
+    const productContainer = document.getElementById("productContainer");
+  if (productContainer) {
+    productShow(0); 
+  }
   }
 
   // 2. Category Filter Buttons
@@ -285,10 +290,10 @@ function updateSetting() {
   var line1 = document.getElementById("line1");
   var line2 = document.getElementById("line2");
   var city = document.getElementById("city");
-  var pCode = document.getElementById("postalCode"); // Matched to id="postalCode"
+  var pCode = document.getElementById("postalCode"); 
   var mobile = document.getElementById("phoneNumber");
 
-  // Safety check to ensure elements exist in the DOM
+
   if (!fName || !lName || !line1 || !pCode || !mobile) {
     alert("Required form elements are missing.");
     return;
@@ -365,3 +370,128 @@ function passwordChange(){
   request.send(form);
 
 }
+function productShow(categoryId) {
+  var productContainer = document.getElementById("productContainer");
+
+  // Visual feedback: briefly dim the container while fetching
+  if (productContainer) {
+    productContainer.style.opacity = "0.4";
+  }
+
+  var request = new XMLHttpRequest();
+  request.onreadystatechange = function () {
+    if (request.readyState === 4 && request.status === 200) {
+      if (productContainer) {
+        productContainer.innerHTML = request.responseText;
+        productContainer.style.opacity = "1";
+      }
+    }
+  };
+
+  request.open("GET", "loadProductsProcess.php?category=" + encodeURIComponent(categoryId), true);
+  request.send();
+}
+
+function searchProducts() {
+  const searchInput = document.getElementById("searchTxt");
+  const productContainer = document.getElementById("productContainer");
+  const searchText = searchInput ? searchInput.value.trim() : "";
+
+  const request = new XMLHttpRequest();
+  request.onreadystatechange = function () {
+    if (request.readyState === 4 && request.status === 200) {
+      if (productContainer) {
+        productContainer.innerHTML = request.responseText;
+      }
+    }
+  };
+
+  // Send search query via GET to loadProductsProcess.php
+  request.open("GET", "loadProductsProcess.php?search=" + encodeURIComponent(searchText), true);
+  request.send();
+}
+
+
+let currentCategory = 0;
+let currentSort = "newest";
+let currentMaxPrice = 50000;
+
+// Category Selector
+function selectCategory(catId, element) {
+  currentCategory = catId;
+
+  // Toggle active styling
+  document.querySelectorAll(".category-filter-btn").forEach((btn) => {
+    btn.classList.remove("active");
+    btn.classList.add("inactive");
+  });
+
+  if (element) {
+    element.classList.remove("inactive");
+    element.classList.add("active");
+  }
+
+  filterProducts();
+}
+
+// Sort Selector
+function selectSort(sortType, element) {
+  currentSort = sortType;
+
+  // Toggle active pill styling if using pill buttons
+  if (element) {
+    document.querySelectorAll(".sort-pill").forEach((btn) => btn.classList.remove("active"));
+    element.classList.add("active");
+  }
+
+  filterProducts();
+}
+
+function updatePrice(val) {
+  currentMaxPrice = val;
+  const display = document.getElementById("priceDisplay");
+  if (display) {
+    display.textContent = `Rs. ${parseInt(val).toLocaleString()}`;
+  }
+}
+
+function searchProducts() {
+  filterProducts();
+}
+
+function filterProducts() {
+  const searchInput = document.getElementById("searchTxt");
+  const searchText = searchInput ? searchInput.value.trim() : "";
+  const productContainer = document.getElementById("productContainer");
+
+  if (productContainer) {
+    productContainer.style.opacity = "0.4";
+  }
+
+  const queryParams = new URLSearchParams({
+    category: currentCategory,
+    sort: currentSort,
+    price: currentMaxPrice,
+    search: searchText,
+  });
+
+  const request = new XMLHttpRequest();
+  request.onreadystatechange = function () {
+    if (request.readyState === 4 && request.status === 200) {
+      if (productContainer) {
+        productContainer.innerHTML = request.responseText;
+        productContainer.style.opacity = "1";
+      }
+    }
+  };
+
+  request.open("GET", "loadProductsProcess.php?" + queryParams.toString(), true);
+  request.send();
+}
+
+// Initial Auto-Load when Shop page loads
+window.addEventListener("DOMContentLoaded", function () {
+  if (document.getElementById("productContainer")) {
+    filterProducts();
+  }
+});

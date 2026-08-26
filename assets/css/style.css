@@ -426,30 +426,29 @@ footer {
     }
 
 .sort-pills-container {
-      background-color: #f0eded;
-      border-radius: 9999px;
-      padding: 4px;
-      display: inline-flex;
-      gap: 8px;
-    }
+  background-color: #f1eeeb;
+  border-radius: 50px;
+  overflow-x: auto;
+  white-space: nowrap;
+}
 
 .sort-pill {
-      border: none;
-      background: transparent;
-      padding: 8px 16px;
-      border-radius: 9999px;
-      font-weight: 600;
-      font-size: 14px;
-      letter-spacing: 0.7px;
-      color: var(--niru-body-text);
-      transition: all 0.2s ease;
-    }
+  border: none;
+  background: transparent;
+  padding: 6px 14px;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--niru-body-text);
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
 
 .sort-pill.active {
-      background-color: #ffffff;
-      color: var(--niru-primary);
-      box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.08);
-    }
+  background-color: #ffffff;
+  color: var(--niru-primary);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
 
 .shop-product-card {
       background-color: #ffffff;
