@@ -415,47 +415,37 @@ function searchProducts() {
 let currentCategory = 0;
 let currentSort = "newest";
 let currentMaxPrice = 50000;
+let currentPage = 1; // Track active page
 
-// Category Selector
+function changePage(pageNo) {
+  if (pageNo < 1) return;
+  currentPage = pageNo;
+  filterProducts();
+  // Smooth scroll back to top of products
+  document.getElementById("productContainer")?.scrollIntoView({ behavior: "smooth" });
+}
+
 function selectCategory(catId, element) {
   currentCategory = catId;
-
-  // Toggle active styling
+  currentPage = 1; // Reset to page 1 on filter change
   document.querySelectorAll(".category-filter-btn").forEach((btn) => {
     btn.classList.remove("active");
     btn.classList.add("inactive");
   });
-
   if (element) {
     element.classList.remove("inactive");
     element.classList.add("active");
   }
-
   filterProducts();
 }
 
-// Sort Selector
 function selectSort(sortType, element) {
   currentSort = sortType;
-
-  // Toggle active pill styling if using pill buttons
+  currentPage = 1; // Reset to page 1
   if (element) {
     document.querySelectorAll(".sort-pill").forEach((btn) => btn.classList.remove("active"));
     element.classList.add("active");
   }
-
-  filterProducts();
-}
-
-function updatePrice(val) {
-  currentMaxPrice = val;
-  const display = document.getElementById("priceDisplay");
-  if (display) {
-    display.textContent = `Rs. ${parseInt(val).toLocaleString()}`;
-  }
-}
-
-function searchProducts() {
   filterProducts();
 }
 
@@ -463,16 +453,16 @@ function filterProducts() {
   const searchInput = document.getElementById("searchTxt");
   const searchText = searchInput ? searchInput.value.trim() : "";
   const productContainer = document.getElementById("productContainer");
+  const paginationContainer = document.getElementById("paginationContainer");
 
-  if (productContainer) {
-    productContainer.style.opacity = "0.4";
-  }
+  if (productContainer) productContainer.style.opacity = "0.4";
 
   const queryParams = new URLSearchParams({
     category: currentCategory,
     sort: currentSort,
     price: currentMaxPrice,
     search: searchText,
+    page: currentPage,
   });
 
   const request = new XMLHttpRequest();
@@ -488,10 +478,3 @@ function filterProducts() {
   request.open("GET", "loadProductsProcess.php?" + queryParams.toString(), true);
   request.send();
 }
-
-// Initial Auto-Load when Shop page loads
-window.addEventListener("DOMContentLoaded", function () {
-  if (document.getElementById("productContainer")) {
-    filterProducts();
-  }
-});

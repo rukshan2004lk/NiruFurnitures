@@ -179,14 +179,7 @@ require_once 'connection.php';
           </div>
 
           <!-- Pagination -->
-          <div class="d-flex align-items-center justify-content-center gap-2">
-            <a href="#" class="pagination-btn active">1</a>
-            <a href="#" class="pagination-btn">2</a>
-            <a href="#" class="pagination-btn">3</a>
-            <a href="#" class="pagination-btn" aria-label="Next Page">
-              <i class="bi bi-chevron-right"></i>
-            </a>
-          </div>
+    
 
         </section>
 
