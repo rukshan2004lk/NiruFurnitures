@@ -478,3 +478,68 @@ function filterProducts() {
   request.open("GET", "loadProductsProcess.php?" + queryParams.toString(), true);
   request.send();
 }
+
+
+function buyNow(productId) {
+  const qtyElement = document.getElementById("qtyVal");
+  const qty = qtyElement ? parseInt(qtyElement.textContent) || 1 : 1;
+  window.location.href = "checkout.php?id=" + productId + "&qty=" + qty;
+}
+
+
+function placeOrder() {
+  // 1. Customer & Address Details
+  const email = document.getElementById("email").value;
+  const mobile = document.getElementById("mobile").value;
+  const fname = document.getElementById("fname").value;
+  const lname = document.getElementById("lname").value;
+  const line1 = document.getElementById("line1").value;
+  const line2 = document.getElementById("line2").value;
+  const city = document.getElementById("city").value;
+  const country = document.getElementById("country").value;
+  const pcode = document.getElementById("pcode").value;
+
+  // 2. Product Details
+  const productId = document.getElementById("productId") ? document.getElementById("productId").value : 0;
+  const qty = document.getElementById("qty") ? document.getElementById("qty").value : 1;
+
+  // 3. Payment Details
+  const cardNumber = document.getElementById("cardNumber").value;
+  const expDate = document.getElementById("expDate").value;
+  const cvv = document.getElementById("cvv").value;
+
+  // 4. Build Form Data
+  const form = new FormData();
+  form.append("email", email);
+  form.append("mobile", mobile);
+  form.append("fname", fname);
+  form.append("lname", lname);
+  form.append("line1", line1);
+  form.append("line2", line2);
+  form.append("city", city);
+  form.append("country", country);
+  form.append("pcode", pcode);
+
+  form.append("product_id", productId);
+  form.append("qty", qty);
+
+  form.append("cN", cardNumber);
+  form.append("eD", expDate);
+  form.append("cV", cvv);
+
+  // 5. Send AJAX Request
+  const request = new XMLHttpRequest();
+  request.onreadystatechange = function () {
+    if (request.readyState === 4 && request.status === 200) {
+      const response = request.responseText.trim();
+      if (response === "success") {
+        window.location.href = "user/orders.html";
+      } else {
+        alert(response);
+      }
+    }
+  };
+
+  request.open("POST", "checkoutProcess.php", true);
+  request.send(form);
+}

@@ -136,7 +136,7 @@
                 materials. Discover a sanctuary designed for your home.
               </p>
               <div class="d-flex flex-wrap gap-3 justify-content-center">
-                <a href="shop.html" class="btn btn-niru-primary btn-lg px-4"
+                <a href="shop.php" class="btn btn-niru-primary btn-lg px-4"
                   >Shop Now</a
                 >
                 <a href="shop.html" class="btn btn-niru-outline btn-lg px-4"
