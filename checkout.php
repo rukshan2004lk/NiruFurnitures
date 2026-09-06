@@ -2,127 +2,98 @@
 session_start();
 require_once 'connection.php';
 
-
-// If your login code did this:
-
-
-// Then in checkout.php, update your check:
 if (!isset($_SESSION['u'])) {
-  header("Location: login.php");
-  exit();
+    header("Location: login.php");
+    exit();
 }
-$user_data = $_SESSION['u'];
-$email = $user_data['email'];
-// 2. Validate URL Parameters
+
+$user_session = $_SESSION['u'];
+$user_id      = (int)$user_session['user_id'];
+$email        = $user_session['email'];
+
+// Read optional single-product parameters
 $product_id = (int)($_GET["id"] ?? 0);
-$qty = (int)($_GET["qty"] ?? 1);
-if ($qty < 1) {
-  $qty = 1;
+$qty        = max(1, (int)($_GET["qty"] ?? 1));
+$color      = htmlspecialchars(trim($_GET["color"] ?? 'Oatmeal Cream'));
+
+$checkout_items = [];
+$subtotal = 0.00;
+
+if ($product_id > 0) {
+    // Mode A: Direct Buy Now
+    $product_rs = Database::search("SELECT * FROM `products` WHERE `product_id` = '$product_id' AND `status_id` = 1");
+    if ($product_rs->num_rows == 0) {
+        header("Location: shop.php");
+        exit();
+    }
+    $product = $product_rs->fetch_assoc();
+
+    $img_rs = Database::search("SELECT `image_path` FROM `product_images` WHERE `product_id` = '$product_id' ORDER BY `is_primary` DESC, `sort_order` ASC LIMIT 1");
+    $img_data = $img_rs->fetch_assoc();
+    $img_src = (!empty($img_data["image_path"])) ? $img_data["image_path"] : "Images/products/nordic_lounge.png";
+
+    $price = (float)$product["price"];
+    $line = $price * $qty;
+    $subtotal += $line;
+
+    $checkout_items[] = [
+        'name'       => $product['name'],
+        'price'      => $price,
+        'qty'        => $qty,
+        'color'      => $color,
+        'line_total' => $line,
+        'image'      => $img_src
+    ];
+} else {
+    // Mode B: Entire Cart Checkout
+    $cart_query = "SELECT ci.quantity, ci.unit_price, ci.color, p.name, 
+                          (SELECT image_path FROM product_images WHERE product_id = p.product_id ORDER BY is_primary DESC, sort_order ASC LIMIT 1) AS image_path 
+                   FROM `carts` c 
+                   INNER JOIN `cart_items` ci ON c.cart_id = ci.cart_id 
+                   INNER JOIN `products` p ON ci.product_id = p.product_id 
+                   WHERE c.user_id = '$user_id'";
+    $cart_rs = Database::search($cart_query);
+
+    if ($cart_rs->num_rows == 0) {
+        header("Location: cart.php");
+        exit();
+    }
+
+    while ($c_item = $cart_rs->fetch_assoc()) {
+        $price = (float)$c_item['unit_price'];
+        $item_qty = (int)$c_item['quantity'];
+        $line = $price * $item_qty;
+        $subtotal += $line;
+
+        $checkout_items[] = [
+            'name'       => $c_item['name'],
+            'price'      => $price,
+            'qty'        => $item_qty,
+            'color'      => $c_item['color'] ?? '',
+            'line_total' => $line,
+            'image'      => !empty($c_item['image_path']) ? $c_item['image_path'] : "Images/products/nordic_lounge.png"
+        ];
+    }
 }
 
-if ($product_id <= 0) {
-  header("Location: shop.php");
-  exit();
-}
-
-// 3. Fetch Product Details
-$product_rs = Database::search("SELECT * FROM `products` WHERE `product_id` = '" . $product_id . "'");
-
-if ($product_rs->num_rows == 0) {
-  header("Location: shop.php");
-  exit();
-}
-
-$product = $product_rs->fetch_assoc();
-
-// 4. Fetch Product Image
-$image_rs = Database::search("SELECT * FROM `product_images` WHERE `product_id` = '" . $product_id . "' ORDER BY `is_primary` DESC, `sort_order` ASC LIMIT 1");
-$image_data = $image_rs->fetch_assoc();
-$image_src = (!empty($image_data["image_path"])) ? $image_data["image_path"] : "Images/products/nordic_lounge.png";
-
-// 5. Price Calculations
-$item_price = (float)$product["price"];
-$subtotal = $item_price * $qty;
 $tax = 0.00;
 $total = $subtotal + $tax;
 
-// 6. Fetch User Details Safely
-$user_rs = Database::search("SELECT * FROM `user` WHERE `email` = '" . $email . "'");
-$user_data = ($user_rs->num_rows > 0) ? $user_rs->fetch_assoc() : [];
+// Fetch fresh user profile details
+$user_rs = Database::search("SELECT * FROM `user` WHERE `user_id` = '$user_id'");
+$user_data = ($user_rs->num_rows > 0) ? $user_rs->fetch_assoc() : $user_session;
 ?>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NiRu Furnitures - Checkout</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css">
-</head>
-
-<body>
-
-  <header>
-    <nav class="navbar navbar-expand-lg fixed-top px-3 px-lg-5">
-      <div class="container-fluid max-w-1320">
-        <a class="brand-logo me-4" href="index.html">NiRu</a>
-
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarContent">
-          <ul class="navbar-nav mx-auto text-center mb-2 mb-lg-0 gap-lg-4">
-            <li class="nav-item"><a class="nav-link-custom" href="index.html">Home</a></li>
-            <li class="nav-item"><a class="nav-link-custom active" href="shop.php">Shop</a></li>
-            <li class="nav-item"><a class="nav-link-custom" href="about.html">About Us</a></li>
-            <li class="nav-item"><a class="nav-link-custom" href="contact.html">Contact</a></li>
-            <li class="nav-item"><a class="nav-link-custom" href="faq.html">FAQ</a></li>
-          </ul>
-
-          <div class="d-flex align-items-center gap-3">
-            <a href="cart.html" class="icon-btn text-decoration-none position-relative" aria-label="Cart">
-              <i class="bi bi-bag"></i>
-              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 10px;">2</span>
-            </a>
-
-            <div class="dropdown">
-              <button class="icon-btn dropdown-toggle border-0 bg-transparent p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Account">
-                <i class="bi bi-person"></i>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 rounded-3">
-                <li><a class="dropdown-item py-2" href="user/dashboard.html"><i class="bi bi-speedometer2 me-2"></i>My Dashboard</a></li>
-                <li><a class="dropdown-item py-2" href="user/orders.html"><i class="bi bi-box-seam me-2"></i>My Orders</a></li>
-                <li><a class="dropdown-item py-2" href="user/wishlist.html"><i class="bi bi-heart me-2"></i>Wishlist</a></li>
-                <li>
-                  <hr class="dropdown-divider">
-                </li>
-                <li><a class="dropdown-item py-2" href="admin/admin-dashboard.html"><i class="bi bi-shield-lock me-2"></i>Admin Panel</a></li>
-                <li>
-                  <hr class="dropdown-divider">
-                </li>
-                <li><a class="dropdown-item py-2 text-danger" href="login.html"><i class="bi bi-box-arrow-right me-2"></i>Sign In / Register</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </nav>
-  </header>
+<?php
+$page_title = "NiRu Furnitures - Checkout";
+include 'header.php';
+?>
 
   <main style="padding-top: 100px; padding-bottom: 80px;">
     <div class="container-xl">
 
       <nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html" class="text-decoration-none text-muted">Home</a></li>
+          <li class="breadcrumb-item"><a href="index.php" class="text-decoration-none text-muted">Home</a></li>
           <li class="breadcrumb-item"><a href="shop.php" class="text-decoration-none text-muted">Shop</a></li>
           <li class="breadcrumb-item active" aria-current="page">Checkout</li>
         </ol>
@@ -130,10 +101,10 @@ $user_data = ($user_rs->num_rows > 0) ? $user_rs->fetch_assoc() : [];
 
       <h1 class="display-6 fw-bold mb-4" style="color: var(--niru-primary);">Checkout</h1>
 
-      <form onsubmit="event.preventDefault(); window.location.href='user/orders.html';">
+      <form onsubmit="event.preventDefault();">
         <div class="row g-4">
 
-          <!-- Left Column: Forms -->
+          <!-- Left Column: Delivery and Payment Forms -->
           <div class="col-12 col-lg-7">
 
             <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
@@ -145,7 +116,7 @@ $user_data = ($user_rs->num_rows > 0) ? $user_rs->fetch_assoc() : [];
                 </div>
                 <div class="col-12 col-md-6">
                   <label class="form-label small fw-semibold">Phone Number</label>
-                  <input id="mobile type=" tel" class="form-control" name="mobile" value="<?php echo htmlspecialchars($user_data['phone'] ?? ''); ?>" placeholder="076 1234567" required>
+                  <input id="mobile" type="tel" class="form-control" name="mobile" value="<?php echo htmlspecialchars($user_data['phone'] ?? ''); ?>" placeholder="071 2345678" required>
                 </div>
               </div>
             </div>
@@ -163,25 +134,11 @@ $user_data = ($user_rs->num_rows > 0) ? $user_rs->fetch_assoc() : [];
                 </div>
                 <div class="col-12">
                   <label class="form-label small fw-semibold">Address Line 1</label>
-                  <input
-                    id="line1"
-                    type="text"
-                    class="form-control mb-2"
-                    name="line1"
-                    placeholder="Street address, P.O. box, company name"
-                    value="<?php echo htmlspecialchars($user_data['line_1'] ?? ''); ?>"
-                    required>
+                  <input id="line1" type="text" class="form-control mb-2" name="line1" placeholder="Street address, house number" value="<?php echo htmlspecialchars($user_data['address_line1'] ?? ''); ?>" required>
                 </div>
-
                 <div class="col-12">
                   <label class="form-label small fw-semibold">Address Line 2 (Optional)</label>
-                  <input
-                    id="line2"
-                    type="text"
-                    class="form-control"
-                    name="line2"
-                    placeholder="Apartment, suite, unit, building, floor, etc."
-                    value="<?php echo htmlspecialchars($user_data['line_2'] ?? ''); ?>">
+                  <input id="line2" type="text" class="form-control" name="line2" placeholder="Apartment, suite, unit, floor" value="<?php echo htmlspecialchars($user_data['address_line2'] ?? ''); ?>">
                 </div>
                 <div class="col-12 col-md-5">
                   <label class="form-label small fw-semibold">City</label>
@@ -217,15 +174,15 @@ $user_data = ($user_rs->num_rows > 0) ? $user_rs->fetch_assoc() : [];
               <div class="row g-3">
                 <div class="col-12">
                   <label class="form-label small fw-semibold">Card Number</label>
-                  <input id="cardNumber" type="text" class="form-control" placeholder="4532 •••• •••• 8892" value="4532 9901 2234 8892" required>
+                  <input id="cardNumber" type="text" class="form-control" placeholder="4242 •••• •••• 4242" value="4242 4242 4242 4242" required>
                 </div>
                 <div class="col-12 col-md-6">
                   <label class="form-label small fw-semibold">Expiration Date</label>
-                  <input id="expDate" type="text" class="form-control" placeholder="MM/YY" value="08/28" required>
+                  <input id="expDate" type="text" class="form-control" placeholder="MM/YY" value="12/28" required>
                 </div>
                 <div class="col-12 col-md-6">
                   <label class="form-label small fw-semibold">CVV Security Code</label>
-                  <input id="cvv" type="password" class="form-control" placeholder="123" value="382" required>
+                  <input id="cvv" type="password" class="form-control" placeholder="123" value="123" maxlength="4" required>
                 </div>
               </div>
             </div>
@@ -237,19 +194,26 @@ $user_data = ($user_rs->num_rows > 0) ? $user_rs->fetch_assoc() : [];
             <div class="card border-0 shadow-sm rounded-4 p-4 sticky-top" style="top: 100px; background-color: var(--niru-bg-alt);">
               <h5 class="fw-bold mb-4" style="color: var(--niru-primary);">Review Your Order</h5>
 
-              <!-- Dynamic Item Row -->
-              <div class="d-flex align-items-center justify-content-between mb-3 pb-3 border-bottom">
-                <div class="d-flex align-items-center gap-3">
-                  <img src="<?php echo htmlspecialchars($image_src); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" class="rounded-3" style="width: 54px; height: 54px; object-fit: cover; background: #fff;">
-                  <div>
-                    <h6 class="mb-0 fw-bold small"><?php echo htmlspecialchars($product["name"]); ?></h6>
-                    <small class="text-muted">Qty: <?php echo $qty; ?> &times; Rs. <?php echo number_format($item_price, 2); ?></small>
+              <!-- Dynamic Order Item Loop -->
+              <div class="order-items-list mb-3" style="max-height: 280px; overflow-y: auto;">
+                <?php foreach ($checkout_items as $item) { ?>
+                  <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom">
+                    <div class="d-flex align-items-center gap-3">
+                      <img src="<?php echo htmlspecialchars($item['image']); ?>" alt="<?php echo htmlspecialchars($item['name']); ?>" class="rounded-3" style="width: 50px; height: 50px; object-fit: cover; background: #fff;">
+                      <div>
+                        <h6 class="mb-0 fw-bold small"><?php echo htmlspecialchars($item["name"]); ?></h6>
+                        <?php if (!empty($item['color'])) { ?>
+                          <div style="font-size: 11px;"><span class="badge bg-secondary-subtle text-dark border px-2 py-1 my-1">Color: <?php echo htmlspecialchars($item['color']); ?></span></div>
+                        <?php } ?>
+                        <small class="text-muted">Qty: <?php echo $item['qty']; ?> &times; Rs. <?php echo number_format($item['price'], 2); ?></small>
+                      </div>
+                    </div>
+                    <span class="fw-semibold small">Rs. <?php echo number_format($item['line_total'], 2); ?></span>
                   </div>
-                </div>
-                <span class="fw-semibold small">Rs. <?php echo number_format($subtotal, 2); ?></span>
+                <?php } ?>
               </div>
 
-              <!-- Pricing Breakdown -->
+              <!-- Pricing Calculation -->
               <div class="d-flex justify-content-between mb-2">
                 <span class="text-muted small">Subtotal</span>
                 <span class="fw-semibold small">Rs. <?php echo number_format($subtotal, 2); ?></span>
@@ -262,19 +226,21 @@ $user_data = ($user_rs->num_rows > 0) ? $user_rs->fetch_assoc() : [];
                 <span class="text-muted small">Tax</span>
                 <span class="fw-semibold small">Rs. <?php echo number_format($tax, 2); ?></span>
               </div>
-              <!-- Inside <form> in checkout.php -->
+
+              <!-- State elements for placeOrder() -->
               <input type="hidden" id="productId" value="<?php echo $product_id; ?>">
               <input type="hidden" id="qty" value="<?php echo $qty; ?>">
-              <input type="hidden" id="itemPrice" value="<?php echo $item_price; ?>">
+              <input type="hidden" id="color" value="<?php echo htmlspecialchars($color); ?>">
               <hr class="my-3">
 
-              <!-- Total -->
               <div class="d-flex justify-content-between mb-4">
                 <span class="fs-5 fw-bold" style="color: var(--niru-primary);">Total Due</span>
                 <span class="fs-4 fw-bold" style="color: var(--niru-primary);">Rs. <?php echo number_format($total, 2); ?></span>
               </div>
 
-              <button type="submit" class="btn btn-niru-primary w-100 py-3 rounded-3 fw-bold fs-6 shadow-sm mb-3">Place Order & Pay <i class="bi bi-lock-fill ms-2"></i></button>
+              <button type="button" onclick="placeOrder();" class="btn btn-niru-primary w-100 py-3 rounded-3 fw-bold fs-6 shadow-sm mb-3">
+                Place Order & Pay <i class="bi bi-lock-fill ms-2"></i>
+              </button>
 
               <div class="text-center">
                 <small class="text-muted"><i class="bi bi-arrow-counterclockwise me-1"></i> 30-Day Money Back Guarantee & Warranty</small>
@@ -287,16 +253,6 @@ $user_data = ($user_rs->num_rows > 0) ? $user_rs->fetch_assoc() : [];
     </div>
   </main>
 
-  <footer>
-    <div class="container-xl">
-      <div class="pt-4 border-top text-center" style="border-color: var(--niru-border) !important;">
-        <p class="small mb-0" style="color: var(--niru-body-text);">© 2026 NiRu Furnitures. All rights reserved.</p>
-      </div>
-    </div>
-  </footer>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/js/script.js"></script>
-</body>
+<?php include 'footer.php'; ?>
 
 </html>
