@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once "connection.php";
 
 $category_id = (int)($_GET["category"] ?? 0);
@@ -8,12 +9,12 @@ $search      = trim($_GET["search"] ?? "");
 $page        = (int)($_GET["page"] ?? 1);
 if ($page < 1) $page = 1;
 
-$results_per_page = 6; // Adjust items per page as needed
+$results_per_page = 6;
 
-// 1. Where Conditions
-$where_clauses = ["`price` <= " . $max_price];
+$where_clauses = ["`status_id` = 1", "`price` <= " . $max_price];
+
 if (!empty($search)) {
-    $where_clauses[] = "(`name` LIKE '%" . $search . "%' OR `description` LIKE '%" . $search . "%')";
+    $where_clauses[] = "(`name` LIKE '%" . addslashes($search) . "%' OR `description` LIKE '%" . addslashes($search) . "%')";
 }
 if ($category_id > 0) {
     $where_clauses[] = "`category_id` = " . $category_id;
@@ -21,59 +22,73 @@ if ($category_id > 0) {
 
 $where_sql = " WHERE " . implode(" AND ", $where_clauses);
 
-// 2. Count Total Records for Pagination
 $total_rs = Database::search("SELECT COUNT(*) AS `total` FROM `products`" . $where_sql);
 $total_data = $total_rs->fetch_assoc();
 $total_records = $total_data["total"] ?? 0;
 $number_of_pages = ceil($total_records / $results_per_page);
 
-// 3. Sorting SQL
-$order_by = " ORDER BY `product_id` DESC";
 switch ($sort) {
     case "price_low":
-    case "sales":
         $order_by = " ORDER BY `price` ASC";
         break;
     case "price_high":
         $order_by = " ORDER BY `price` DESC";
         break;
     case "popular":
+    case "sales":
     case "newest":
     default:
         $order_by = " ORDER BY `product_id` DESC";
         break;
 }
 
-// 4. Offset Calculation
 $offset = ($page - 1) * $results_per_page;
 $query = "SELECT * FROM `products`" . $where_sql . $order_by . " LIMIT " . $results_per_page . " OFFSET " . $offset;
 
 $product_rs = Database::search($query);
 
+// Current User ID for Wishlist Lookup
+$user_id = isset($_SESSION['u']) ? (int)$_SESSION['u']['user_id'] : 0;
+
 // Render Products
 if ($product_rs->num_rows > 0) {
     while ($product_data = $product_rs->fetch_assoc()) {
+        $p_id = (int)$product_data["product_id"];
+
+        // Image query
         $image_rs = Database::search("SELECT `image_path` FROM `product_images` 
-                                      WHERE `product_id`='" . $product_data["product_id"] . "' 
+                                      WHERE `product_id`='$p_id' 
                                       ORDER BY `is_primary` DESC, `sort_order` ASC LIMIT 1");
         $image_data = $image_rs->fetch_assoc();
         $image_src = $image_data["image_path"] ?? "Images/products/nordic_lounge.png";
+
+        // Check if item is already in this user's wishlist
+        $is_wishlisted = false;
+        if ($user_id > 0) {
+            $wish_check = Database::search("SELECT `wishlist_id` FROM `wishlists` WHERE `user_id` = '$user_id' AND `product_id` = '$p_id'");
+            if ($wish_check->num_rows > 0) {
+                $is_wishlisted = true;
+            }
+        }
 ?>
         <div class="col-12 col-sm-6 col-md-4">
             <div class="shop-product-card">
                 <div class="shop-product-img">
-                    <a href="product-detail.php?id=<?php echo $product_data['product_id']; ?>">
-                        <img src="<?php echo $image_src; ?>" alt="<?php echo htmlspecialchars($product_data["name"]); ?>">
+                    <a href="product-detail.php?id=<?php echo $p_id; ?>">
+                        <img src="<?php echo htmlspecialchars($image_src); ?>" alt="<?php echo htmlspecialchars($product_data["name"]); ?>">
                     </a>
-                    <button class="favorite-btn" aria-label="Favorite">
-                        <i class="bi bi-heart"></i>
+                    <button type="button" 
+                            class="favorite-btn" 
+                            onclick="toggleWishlist(<?php echo $p_id; ?>, this);" 
+                            aria-label="Wishlist">
+                        <i class="bi <?php echo $is_wishlisted ? 'bi-heart-fill text-danger' : 'bi-heart'; ?>"></i>
                     </button>
                 </div>
                 <div class="p-4 d-flex flex-column justify-content-between flex-grow-1">
                     <div>
                         <div class="d-flex align-items-center justify-content-between mb-2">
                             <h3 class="fs-5 fw-semibold mb-0" style="color: var(--niru-primary);">
-                                <a href="product-detail.php?id=<?php echo $product_data['product_id']; ?>" class="text-decoration-none" style="color: inherit;">
+                                <a href="product-detail.php?id=<?php echo $p_id; ?>" class="text-decoration-none" style="color: inherit;">
                                     <?php echo htmlspecialchars($product_data["name"]); ?>
                                 </a>
                             </h3>
@@ -82,14 +97,14 @@ if ($product_rs->num_rows > 0) {
                             </div>
                         </div>
                         <p class="small text-muted mb-3" style="color: var(--niru-body-text);">
-                            <?php echo htmlspecialchars(substr($product_data["description"] ?? "", 0, 30)) . "..."; ?>
+                            <?php echo htmlspecialchars(substr($product_data["description"] ?? "", 0, 45)) . "..."; ?>
                         </p>
                     </div>
                     <div class="d-flex align-items-center justify-content-between pt-2">
                         <span class="fs-5 fw-semibold" style="color: var(--niru-primary);">
-                            Rs. <?php echo number_format($product_data["price"]); ?>
+                            Rs. <?php echo number_format($product_data["price"], 2); ?>
                         </span>
-                        <a href="product-detail.php?id=<?php echo $product_data['product_id']; ?>" class="btn btn-niru-sm text-decoration-none">View Details</a>
+                        <a href="product-detail.php?id=<?php echo $p_id; ?>" class="btn btn-niru-sm text-decoration-none">View Details</a>
                     </div>
                 </div>
             </div>

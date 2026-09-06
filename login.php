@@ -1,80 +1,11 @@
 <?php
-include 'connection.php';
+$page_title = "NiRu Furnitures - Welcome Back";
+include 'header.php';
 
+$cookie_email = $_COOKIE["email"] ?? "";
+$cookie_password = $_COOKIE["password"] ?? "";
+$remember_checked = (!empty($cookie_email) && !empty($cookie_password)) ? "checked" : "";
 ?>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NiRu Furnitures - Welcome Back</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-
-  <link rel="stylesheet" href="assets/css/style.css">
-</head>
-
-<body>
-
-  <header>
-    <nav class="navbar navbar-expand-lg fixed-top px-3 px-lg-5">
-      <div class="container-fluid max-w-1320">
-        <a class="brand-logo me-4" href="index.html">NiRu</a>
-
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarContent">
-          <ul class="navbar-nav mx-auto text-center mb-2 mb-lg-0 gap-lg-4">
-            <li class="nav-item"><a class="nav-link-custom" href="index.html">Home</a></li>
-            <li class="nav-item"><a class="nav-link-custom" href="shop.html">Shop</a></li>
-            <li class="nav-item"><a class="nav-link-custom" href="about.html">About Us</a></li>
-            <li class="nav-item"><a class="nav-link-custom" href="contact.html">Contact</a></li>
-            <li class="nav-item"><a class="nav-link-custom" href="faq.html">FAQ</a></li>
-          </ul>
-
-          <div class="d-flex align-items-center gap-3">
-            <div class="search-input-wrapper">
-              <i class="bi bi-search"></i>
-              <input type="text" class="form-control" placeholder="Search furniture...">
-            </div>
-
-            <a href="cart.html" class="icon-btn text-decoration-none position-relative" aria-label="Cart">
-              <i class="bi bi-bag"></i>
-              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 10px;">2</span>
-            </a>
-
-            <div class="dropdown">
-              <button class="icon-btn dropdown-toggle border-0 bg-transparent p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Account">
-                <i class="bi bi-person"></i>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 rounded-3">
-                <li><a class="dropdown-item py-2" href="user/dashboard.html"><i class="bi bi-speedometer2 me-2"></i>My Dashboard</a></li>
-                <li><a class="dropdown-item py-2" href="user/orders.html"><i class="bi bi-box-seam me-2"></i>My Orders</a></li>
-                <li><a class="dropdown-item py-2" href="user/wishlist.html"><i class="bi bi-heart me-2"></i>Wishlist</a></li>
-                <li>
-                  <hr class="dropdown-divider">
-                </li>
-                <li><a class="dropdown-item py-2" href="admin/admin-dashboard.html"><i class="bi bi-shield-lock me-2"></i>Admin Panel</a></li>
-                <li>
-                  <hr class="dropdown-divider">
-                </li>
-                <li><a class="dropdown-item py-2 text-danger" href="login.html"><i class="bi bi-box-arrow-right me-2"></i>Sign In / Register</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </nav>
-  </header>
 
   <main style="padding-top: 120px; padding-bottom: 80px;">
     <div class="container-xl">
@@ -85,29 +16,28 @@ include 'connection.php';
           <p class="small text-muted mb-0">Sign in to manage your orders and saved items.</p>
         </div>
 
-        <form onsubmit="event.preventDefault(); window.location.href='user/dashboard.html';" class="d-flex flex-column gap-3 mb-4">
+        <form onsubmit="event.preventDefault(); signIn();" class="d-flex flex-column gap-3 mb-4">
 
           <div>
             <label for="email" class="form-label-custom">Email</label>
             <div class="input-icon-group">
               <i class="bi bi-envelope"></i>
-              <input type="text" class="form-control" id="email" placeholder="Enter your Email" value="">
+              <input type="email" class="form-control" id="email" placeholder="Enter your Email" value="<?php echo htmlspecialchars($cookie_email); ?>" required>
             </div>
           </div>
 
           <div>
             <div class="d-flex justify-content-between align-items-center mb-1">
               <label for="password" class="form-label-custom mb-0">Password</label>
-              <a href="#" class="small text-decoration-none" style="color: var(--niru-secondary);">Forgot Password?</a>
             </div>
             <div class="input-icon-group">
               <i class="bi bi-lock"></i>
-              <input type="password" class="form-control" id="password" placeholder="Enter your Password">
+              <input type="password" class="form-control" id="password" placeholder="Enter your Password" value="<?php echo htmlspecialchars($cookie_password); ?>" required>
             </div>
           </div>
 
           <div class="form-check my-2">
-            <input class="form-check-input" type="checkbox" id="rememberMe" checked>
+            <input class="form-check-input" type="checkbox" id="rememberMe" <?php echo $remember_checked; ?>>
             <label class="form-check-label small" for="rememberMe" style="color: var(--niru-body-text);">
               Remember me for 30 days
             </label>
@@ -117,13 +47,15 @@ include 'connection.php';
             Sign In to Customer Dashboard <i class="bi bi-arrow-right ms-2"></i>
           </button>
         </form>
+        
         <div id="msgdiv" class="d-none">
           <div id="msg" role="alert"></div>
         </div>
+
         <div class="text-center mb-3">
-          <a onclick="adminSignIn();" class="btn btn-outline-dark w-100 py-2 rounded-3 small">
+          <button type="button" onclick="adminSignIn();" class="btn btn-outline-dark w-100 py-2 rounded-3 small">
             <i class="bi bi-shield-lock me-2"></i>Sign In to Admin Panel
-          </a>
+          </button>
         </div>
 
         <div class="text-center pt-2">
@@ -134,42 +66,7 @@ include 'connection.php';
 
       </div>
 
-
     </div>
   </main>
 
-  <footer>
-    <div class="container-xl">
-      <div class="row g-4">
-
-        <div class="col-12 col-lg-4">
-          <h3 class="fs-4 fw-bold mb-3" style="color: var(--niru-primary);">NiRu</h3>
-          <p class="small mb-0" style="color: var(--niru-body-text);">
-            © 2024 NiRu Furnitures. Crafted for Comfort.
-          </p>
-        </div>
-
-        <div class="col-6 col-md-4 col-lg-4">
-          <div class="footer-heading">COMPANY</div>
-          <ul class="footer-links">
-            <li><a href="#">About Us</a></li>
-            <li><a href="#">Sustainability</a></li>
-          </ul>
-        </div>
-
-        <div class="col-6 col-md-4 col-lg-4">
-          <div class="footer-heading">SUPPORT</div>
-          <ul class="footer-links">
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Shipping Info</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/js/script.js"></script>
-</body>
-
-</html>\
+<?php include 'footer.php'; ?>
