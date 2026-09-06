@@ -8,8 +8,8 @@
       --niru-bg-alt: #f6f3f2;
       --niru-bg-card: #e5e2e1;
       --niru-border: #d4c3be;
-      --font-heading: 'Plus Jakarta Sans', sans-serif;
-      --font-body: 'Inter', sans-serif;
+      --font-heading: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      --font-body: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     }
 
 body {
@@ -642,20 +642,26 @@ footer {
     }
 
 .color-swatch-btn {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      border: 2px solid transparent;
-      padding: 0;
-      cursor: pointer;
-      position: relative;
-      transition: transform 0.2s ease;
-    }
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  padding: 0;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease-in-out;
+  outline: none;
+}
+
+.color-swatch-btn:hover {
+  transform: scale(1.15);
+}
 
 .color-swatch-btn.active {
-      border-color: var(--niru-primary);
-      box-shadow: 0 0 0 2px white, 0 0 0 4px rgba(68, 42, 34, 0.2);
-    }
+  border-color: #ffffff !important;
+  transform: scale(1.12);
+  box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--niru-primary);
+}
 
 .quantity-control {
       background-color: #ffffff;
@@ -2557,3 +2563,143 @@ html, body {
   transform: translateY(0);
 }
 
+/* Theme Styled Admin Storefront & Logout Buttons */
+.admin-link-store {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 10px 18px !important;
+  border-radius: 10px !important;
+  background-color: rgba(197, 168, 128, 0.12) !important;
+  border: 1px solid rgba(197, 168, 128, 0.35) !important;
+  color: #e5cb9f !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  text-decoration: none !important;
+  transition: all 0.25s ease-in-out !important;
+}
+
+.admin-link-store:hover {
+  background-color: #c5a880 !important;
+  border-color: #c5a880 !important;
+  color: #1b1c1c !important;
+  box-shadow: 0 4px 14px rgba(197, 168, 128, 0.3) !important;
+  transform: translateY(-1px);
+}
+
+.admin-link-logout {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 10px 18px !important;
+  border-radius: 10px !important;
+  background-color: rgba(184, 125, 114, 0.12) !important;
+  border: 1px solid rgba(184, 125, 114, 0.35) !important;
+  color: #eab6ad !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  text-decoration: none !important;
+  transition: all 0.25s ease-in-out !important;
+}
+
+.admin-link-logout:hover {
+  background-color: #b87d72 !important;
+  border-color: #b87d72 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(184, 125, 114, 0.35) !important;
+  transform: translateY(-1px);
+}
+
+/* Admin Mobile Navigation Topbar & Offcanvas */
+.admin-mobile-topbar {
+  display: none;
+  background-color: var(--niru-primary);
+  padding: 12px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 991.98px) {
+  .admin-mobile-topbar {
+    display: flex !important;
+  }
+
+  .admin-sidebar {
+    display: none !important;
+  }
+
+  .admin-main {
+    margin-left: 0 !important;
+    padding: 24px 16px !important;
+  }
+
+  .search-input-wrapper {
+    width: 100% !important;
+    max-width: 320px;
+  }
+
+  .navbar-nav .nav-link-custom {
+    padding: 8px 0;
+    display: block;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .auth-card {
+    padding: 24px 18px !important;
+    margin: 0 auto;
+  }
+
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Bottom Sidebar Buttons */
+.admin-link-store,
+.admin-link-logout {
+    height: 50px;
+    padding: 0 18px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+}
+
+/* View Store */
+.admin-link-store {
+    color: #5a3428 !important;
+    background: #f4eee9;
+    border-color: #dfd0c7;
+}
+
+.admin-link-store i {
+    color: #8a604f;
+}
+
+.admin-link-store:hover {
+    background: #eaded6;
+    border-color: #cdb8ab;
+    color: #45281f !important;
+}
+
+/* Log Out */
+.admin-link-logout {
+    color: #7a4538 !important;
+    background: #f7e9e5;
+    border-color: #e5c9c1;
+}
+
+.admin-link-logout i {
+    color: #a45b4b;
+}
+
+.admin-link-logout:hover {
+    background: #eed8d2;
+    border-color: #d8b1a7;
+    color: #633328 !important;
+}
