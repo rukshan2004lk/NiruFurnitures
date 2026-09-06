@@ -1,98 +1,7 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NiRu Furnitures - Stylish Furniture For Modern Living</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap"
-      rel="stylesheet"
-    />
-    
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-      rel="stylesheet"
-    />
-    
-    <link rel="stylesheet" href="assets/css/style.css" />
-  </head>
-  <body>
-    
-    <header>
-      <nav class="navbar navbar-expand-lg fixed-top px-3 px-lg-5">
-        <div class="container-fluid max-w-1320">
-          <a class="brand-logo me-4" href="index.html">NiRu</a>
-
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarContent"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-
-          <div class="collapse navbar-collapse" id="navbarContent">
-            <ul class="navbar-nav mx-auto text-center mb-2 mb-lg-0 gap-lg-4">
-              <li class="nav-item">
-                <a class="nav-link-custom active" href="index.html">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link-custom" href="shop.html">Shop</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link-custom" href="about.html">About Us</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link-custom" href="contact.html">Contact</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link-custom" href="faq.html">FAQ</a>
-              </li>
-            </ul>
-
-            <div class="d-flex align-items-center gap-3">
-              <div class="search-input-wrapper">
-                <i class="bi bi-search"></i>
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="Search furniture..."
-                />
-              </div>
-
-              <a href="cart.html" class="icon-btn text-decoration-none position-relative" aria-label="Cart">
-                <i class="bi bi-bag"></i>
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 10px;">2</span>
-              </a>
-
-              <div class="dropdown">
-                <button class="icon-btn dropdown-toggle border-0 bg-transparent p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Account">
-                  <i class="bi bi-person"></i>
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 rounded-3">
-                  <li><a class="dropdown-item py-2" href="user/dashboard.html"><i class="bi bi-speedometer2 me-2"></i>My Dashboard</a></li>
-                  <li><a class="dropdown-item py-2" href="user/orders.html"><i class="bi bi-box-seam me-2"></i>My Orders</a></li>
-                  <li><a class="dropdown-item py-2" href="user/wishlist.html"><i class="bi bi-heart me-2"></i>Wishlist</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item py-2" href="admin/admin-dashboard.html"><i class="bi bi-shield-lock me-2"></i>Admin Panel</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item py-2 text-danger" href="login.html"><i class="bi bi-box-arrow-right me-2"></i>Sign In / Register</a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </nav>
-    </header>
+<?php
+$page_title = "NiRu Furnitures - Stylish Furniture For Modern Living";
+include 'header.php';
+?>
 
     <main style="padding-top: 80px">
       
@@ -139,7 +48,7 @@
                 <a href="shop.php" class="btn btn-niru-primary btn-lg px-4"
                   >Shop Now</a
                 >
-                <a href="shop.html" class="btn btn-niru-outline btn-lg px-4"
+                <a href="shop.php" class="btn btn-niru-outline btn-lg px-4"
                   >Explore Categories</a
                 >
               </div>
@@ -164,7 +73,7 @@
                 <div class="bento-overlay">
                   <h3 class="fs-3 fw-semibold text-white mb-2">Sofas</h3>
                   <a
-                    href="shop.html"
+                    href="shop.php"
                     class="text-white text-decoration-underline fw-semibold small"
                     style="letter-spacing: 0.7px"
                     >Browse Collection</a
@@ -177,7 +86,7 @@
               <div class="row g-4">
                 
                 <div class="col-12 col-sm-6">
-                  <a href="shop.html" class="text-decoration-none">
+                  <a href="shop.php" class="text-decoration-none">
                     <div class="bento-card">
                       <img
                         src="Images/Category/chair.png"
@@ -191,7 +100,7 @@
                 </div>
 
                 <div class="col-12 col-sm-6">
-                  <a href="shop.html" class="text-decoration-none">
+                  <a href="shop.php" class="text-decoration-none">
                     <div class="bento-card">
                       <img
                         src="Images/Category/table.png"
@@ -205,7 +114,7 @@
                 </div>
 
                 <div class="col-12 col-sm-6">
-                  <a href="shop.html" class="text-decoration-none">
+                  <a href="shop.php" class="text-decoration-none">
                     <div class="bento-card">
                       <img
                         src="Images/Category/bed.png"
@@ -219,7 +128,7 @@
                 </div>
 
                 <div class="col-12 col-sm-6">
-                  <a href="shop.html" class="text-decoration-none">
+                  <a href="shop.php" class="text-decoration-none">
                     <div class="bento-card">
                       <img
                         src="Images/Category/office.png"
@@ -260,7 +169,7 @@
             <div class="col-12 col-sm-6 col-lg-3">
               <div class="product-card">
                 <div class="product-img-wrapper">
-                  <a href="product-detail.html">
+                  <a href="product-detail.php">
                     <img
                       src="Images/featured/nordic_lounge.png"
                       alt="Nordic Lounge Chair"
@@ -276,7 +185,7 @@
                     class="fs-5 fw-normal mb-2"
                     style="color: var(--niru-primary)"
                   >
-                    <a href="product-detail.html" class="text-decoration-none" style="color: inherit;">Nordic Lounge Chair</a>
+                    <a href="product-detail.php" class="text-decoration-none" style="color: inherit;">Nordic Lounge Chair</a>
                   </h3>
                   <p
                     class="fs-6 mb-0 fw-normal"
@@ -291,7 +200,7 @@
             <div class="col-12 col-sm-6 col-lg-3">
               <div class="product-card">
                 <div class="product-img-wrapper">
-                  <a href="product-detail.html">
+                  <a href="product-detail.php">
                     <img
                       src="Images/featured/sulptural_coffee_table.png"
                       alt="Sculptural Coffee Table"
@@ -307,7 +216,7 @@
                     class="fs-5 fw-normal mb-2"
                     style="color: var(--niru-primary)"
                   >
-                    <a href="product-detail.html" class="text-decoration-none" style="color: inherit;">Sculptural Coffee Table</a>
+                    <a href="product-detail.php" class="text-decoration-none" style="color: inherit;">Sculptural Coffee Table</a>
                   </h3>
                   <p
                     class="fs-6 mb-0 fw-normal"
@@ -322,7 +231,7 @@
             <div class="col-12 col-sm-6 col-lg-3">
               <div class="product-card">
                 <div class="product-img-wrapper">
-                  <a href="product-detail.html">
+                  <a href="product-detail.php">
                     <img
                       src="Images/featured/Linear_Oak.png"
                       alt="Linear Oak Bookshelf"
@@ -338,7 +247,7 @@
                     class="fs-5 fw-normal mb-2"
                     style="color: var(--niru-primary)"
                   >
-                    <a href="product-detail.html" class="text-decoration-none" style="color: inherit;">Linear Oak Bookshelf</a>
+                    <a href="product-detail.php" class="text-decoration-none" style="color: inherit;">Linear Oak Bookshelf</a>
                   </h3>
                   <p
                     class="fs-6 mb-0 fw-normal"
@@ -353,7 +262,7 @@
             <div class="col-12 col-sm-6 col-lg-3">
               <div class="product-card">
                 <div class="product-img-wrapper">
-                  <a href="product-detail.html">
+                  <a href="product-detail.php">
                     <img
                       src="Images/featured/Brass_desk.png"
                       alt="Brass Desk Luminary"
@@ -369,7 +278,7 @@
                     class="fs-5 fw-normal mb-2"
                     style="color: var(--niru-primary)"
                   >
-                    <a href="product-detail.html" class="text-decoration-none" style="color: inherit;">Brass Desk Luminary</a>
+                    <a href="product-detail.php" class="text-decoration-none" style="color: inherit;">Brass Desk Luminary</a>
                   </h3>
                   <p
                     class="fs-6 mb-0 fw-normal"
@@ -569,84 +478,4 @@
       </section>
     </main>
 
-    <footer>
-      <div class="container-xl">
-        <div class="row g-4 mb-5">
-          
-          <div class="col-12 col-lg-4">
-            <h3 class="fs-4 fw-bold mb-3" style="color: var(--niru-primary)">
-              NiRu
-            </h3>
-            <p class="mb-4" style="color: var(--niru-body-text)">
-              Crafting modern legacies through timeless furniture and
-              sustainable materials.
-            </p>
-            <div class="d-flex gap-3 fs-5" style="color: var(--niru-primary)">
-              <a
-                href="#"
-                class="text-decoration-none"
-                style="color: inherit"
-                aria-label="Instagram"
-                ><i class="bi bi-instagram"></i
-              ></a>
-              <a
-                href="#"
-                class="text-decoration-none"
-                style="color: inherit"
-                aria-label="Pinterest"
-                ><i class="bi bi-pinterest"></i
-              ></a>
-              <a
-                href="#"
-                class="text-decoration-none"
-                style="color: inherit"
-                aria-label="Twitter"
-                ><i class="bi bi-twitter-x"></i
-              ></a>
-            </div>
-          </div>
-
-          <div class="col-6 col-md-3 col-lg-2">
-            <div class="footer-heading">COMPANY</div>
-            <ul class="footer-links">
-              <li><a href="about.html">About Us</a></li>
-              <li><a href="shop.html">Products</a></li>
-              <li><a href="faq.html">FAQ</a></li>
-            </ul>
-          </div>
-
-          <div class="col-6 col-md-3 col-lg-2">
-            <div class="footer-heading">SUPPORT</div>
-            <ul class="footer-links">
-              <li><a href="faq.html">Shipping Info</a></li>
-              <li><a href="faq.html">Returns & Care</a></li>
-              <li><a href="contact.html">Contact Us</a></li>
-            </ul>
-          </div>
-
-          <div class="col-12 col-md-6 col-lg-4">
-            <div class="footer-heading">VISIT OUR SHOWROOM</div>
-            <p class="mb-3" style="color: var(--niru-body-text)">
-              153/8A Temple Rd.<br />Alluthwatta pohaddramulla, Wadduwa
-            </p>
-            <a href="#" class="btn-directions">
-              Get Directions <i class="bi bi-arrow-right"></i>
-            </a>
-          </div>
-        </div>
-
-        <div
-          class="pt-4 border-top text-center"
-          style="border-color: var(--niru-border) !important"
-        >
-          <p class="small mb-0" style="color: var(--niru-body-text)">
-            © 2026 NiRu Furnitures. Crafted for Comfort.
-          </p>
-        </div>
-      </div>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/script.js"></script>
-</body>
-</html>
+<?php include 'footer.php'; ?>

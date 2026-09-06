@@ -1,84 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NiRu Furnitures - Create Account</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-
-  <link rel="stylesheet" href="assets/css/style.css">
-
-  <!-- Google Identity Services -->
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
-
-  <!-- Apple Sign-In SDK (Real) -->
-  <script type="text/javascript" src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/auth.js"></script>
-
-
-</head>
-
-<body>
-
-  <header>
-    <nav class="navbar navbar-expand-lg fixed-top px-3 px-lg-5">
-      <div class="container-fluid max-w-1320">
-        <a class="brand-logo me-4" href="index.html">NiRu</a>
-
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarContent">
-          <ul class="navbar-nav mx-auto text-center mb-2 mb-lg-0 gap-lg-4">
-            <li class="nav-item"><a class="nav-link-custom" href="index.html">Home</a></li>
-            <li class="nav-item"><a class="nav-link-custom" href="shop.html">Shop</a></li>
-            <li class="nav-item"><a class="nav-link-custom" href="about.html">About Us</a></li>
-            <li class="nav-item"><a class="nav-link-custom" href="contact.html">Contact</a></li>
-            <li class="nav-item"><a class="nav-link-custom" href="faq.html">FAQ</a></li>
-          </ul>
-
-          <div class="d-flex align-items-center gap-3">
-            <div class="search-input-wrapper">
-              <i class="bi bi-search"></i>
-              <input type="text" class="form-control" placeholder="Search furniture...">
-            </div>
-
-            <a href="cart.html" class="icon-btn text-decoration-none position-relative" aria-label="Cart">
-              <i class="bi bi-bag"></i>
-              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 10px;">2</span>
-            </a>
-
-            <div class="dropdown">
-              <button class="icon-btn dropdown-toggle border-0 bg-transparent p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Account">
-                <i class="bi bi-person"></i>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 rounded-3">
-                <li><a class="dropdown-item py-2" href="user/dashboard.html"><i class="bi bi-speedometer2 me-2"></i>My Dashboard</a></li>
-                <li><a class="dropdown-item py-2" href="user/orders.html"><i class="bi bi-box-seam me-2"></i>My Orders</a></li>
-                <li><a class="dropdown-item py-2" href="user/wishlist.html"><i class="bi bi-heart me-2"></i>Wishlist</a></li>
-                <li>
-                  <hr class="dropdown-divider">
-                </li>
-                <li><a class="dropdown-item py-2" href="admin/admin-dashboard.html"><i class="bi bi-shield-lock me-2"></i>Admin Panel</a></li>
-                <li>
-                  <hr class="dropdown-divider">
-                </li>
-                <li><a class="dropdown-item py-2 text-danger" href="login.html"><i class="bi bi-box-arrow-right me-2"></i>Sign In / Register</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </nav>
-  </header>
+<?php
+$page_title = "NiRu Furnitures - Create Account";
+include 'header.php';
+?>
 
   <main style="padding-top: 120px; padding-bottom: 80px;">
     <div class="container-xl">
@@ -176,39 +99,4 @@
     </div>
   </main>
 
-  <footer>
-    <div class="container-xl">
-      <div class="row g-4">
-
-        <div class="col-12 col-lg-4">
-          <h3 class="fs-4 fw-bold mb-3" style="color: var(--niru-primary);">NiRu</h3>
-          <p class="small mb-0" style="color: var(--niru-body-text);">
-            © 2024 NiRu Furnitures. Crafted for Comfort.
-          </p>
-        </div>
-
-        <div class="col-6 col-md-4 col-lg-4">
-          <div class="footer-heading">COMPANY</div>
-          <ul class="footer-links">
-            <li><a href="#">About Us</a></li>
-            <li><a href="#">Sustainability</a></li>
-          </ul>
-        </div>
-
-        <div class="col-6 col-md-4 col-lg-4">
-          <div class="footer-heading">SUPPORT</div>
-          <ul class="footer-links">
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Shipping Info</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/js/script.js"></script>
-</body>
-
-</html>
+<?php include 'footer.php'; ?>

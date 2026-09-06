@@ -13,7 +13,7 @@ class Database
             Database::$connection = new mysqli(
                 "localhost",
                 "root",
-                "Rukshan123",
+                "rukshan123",
                 "niru_furniture",
                 3306
             );
