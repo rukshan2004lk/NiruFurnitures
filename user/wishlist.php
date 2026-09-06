@@ -230,7 +230,7 @@ $wishlist_count = $wishlist_rs->num_rows;
         <div class="col-6 col-md-4 col-lg-4">
           <div class="footer-heading fw-bold mb-2">COMPANY</div>
           <ul class="footer-links list-unstyled">
-            <li><a href="../about.html" class="text-decoration-none text-muted small">About Us</a></li>
+            <li><a href="../about.php" class="text-decoration-none text-muted small">About Us</a></li>
             <li><a href="../shop.php" class="text-decoration-none text-muted small">Sustainability</a></li>
           </ul>
         </div>
@@ -238,15 +238,16 @@ $wishlist_count = $wishlist_rs->num_rows;
         <div class="col-6 col-md-4 col-lg-4">
           <div class="footer-heading fw-bold mb-2">SUPPORT</div>
           <ul class="footer-links list-unstyled">
-            <li><a href="../faq.html" class="text-decoration-none text-muted small">Privacy Policy</a></li>
-            <li><a href="../faq.html" class="text-decoration-none text-muted small">Shipping Info</a></li>
+            <li><a href="../faq.php" class="text-decoration-none text-muted small">Privacy Policy</a></li>
+            <li><a href="../faq.php" class="text-decoration-none text-muted small">Shipping Info</a></li>
           </ul>
         </div>
       </div>
     </div>
   </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="../assets/js/script.js"></script>
 </body>
 </html>

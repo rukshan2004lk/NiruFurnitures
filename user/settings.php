@@ -39,7 +39,7 @@ require_once "../connection.php";
 
   ?>
     <div class="mobile-topbar">
-      <a href="../index.html" class="brand-logo text-decoration-none">NiRu</a>
+      <a href="../index.php" class="brand-logo text-decoration-none">NiRu</a>
       <button
         class="btn btn-dark"
         type="button"
@@ -68,48 +68,51 @@ require_once "../connection.php";
       <div class="offcanvas-body p-3">
         <ul class="nav flex-column gap-2 mb-4">
           <li class="nav-item">
-            <a href="dashboard.html" class="nav-link text-muted"><i class="bi bi-grid me-2"></i>Dashboard</a>
+            <a href="dashboard.php" class="nav-link text-muted"><i class="bi bi-grid me-2"></i>Dashboard</a>
           </li>
           <li class="nav-item">
-            <a href="orders.html" class="nav-link text-muted"><i class="bi bi-bag me-2"></i>My Orders</a>
+            <a href="orders.php" class="nav-link text-muted"><i class="bi bi-bag me-2"></i>My Orders</a>
           </li>
           <li class="nav-item">
-            <a href="wishlist.html" class="nav-link text-muted"><i class="bi bi-heart me-2"></i>Saved Wishlist</a>
+            <a href="wishlist.php" class="nav-link text-muted"><i class="bi bi-heart me-2"></i>Saved Wishlist</a>
           </li>
           <li class="nav-item">
-            <a href="settings.html" class="nav-link active fw-bold text-dark"><i class="bi bi-gear me-2"></i>Account Settings</a>
+            <a href="settings.php" class="nav-link active fw-bold text-dark"><i class="bi bi-gear me-2"></i>Account Settings</a>
           </li>
           <li class="nav-item">
             <hr class="dropdown-divider" />
           </li>
           <li class="nav-item">
-            <a href="../index.html" class="nav-link text-primary"><i class="bi bi-arrow-left me-2"></i>Back to Storefront</a>
+            <a href="../index.php" class="nav-link text-primary"><i class="bi bi-arrow-left me-2"></i>Back to Storefront</a>
+          </li>
+          <li class="nav-item">
+            <a href="../logout.php" class="nav-link text-danger"><i class="bi bi-box-arrow-right me-2"></i>Log Out</a>
           </li>
         </ul>
       </div>
     </div>
 
     <aside class="dashboard-sidebar">
-      <a href="../index.html" class="sidebar-brand">NiRu</a>
+      <a href="../index.php" class="sidebar-brand">NiRu</a>
 
       <ul class="sidebar-menu mb-5">
         <li>
-          <a href="dashboard.html" class="sidebar-link">
+          <a href="dashboard.php" class="sidebar-link">
             <i class="bi bi-grid"></i> Dashboard
           </a>
         </li>
         <li>
-          <a href="orders.html" class="sidebar-link">
+          <a href="orders.php" class="sidebar-link">
             <i class="bi bi-bag"></i> My Orders
           </a>
         </li>
         <li>
-          <a href="wishlist.html" class="sidebar-link">
+          <a href="wishlist.php" class="sidebar-link">
             <i class="bi bi-heart"></i> Wishlist
           </a>
         </li>
         <li>
-          <a href="settings.html" class="sidebar-link active">
+          <a href="settings.php" class="sidebar-link active">
             <i class="bi bi-gear"></i> Settings
           </a>
         </li>
@@ -120,16 +123,20 @@ require_once "../connection.php";
           <?= strtoupper(substr($details_data["first_name"] ?? "U", 0, 1) . substr($details_data["last_name"] ?? "", 0, 1)); ?>
         </div>
         <div class="overflow-hidden">
-          <h4 class="fs-6 fw-semibold mb-0 text-truncate" style="color: var(--niru-primary)">
+          <h4
+            class="fs-6 fw-semibold mb-0 text-truncate"
+            style="color: var(--niru-primary)">
             <?= htmlspecialchars($details_data["first_name"] . " " . $details_data["last_name"]); ?>
           </h4>
-          <small class="text-muted d-block text-truncate" title="<?= htmlspecialchars($details_data['email']); ?>">
+          <small
+            class="text-muted d-block text-truncate"
+            title="<?= htmlspecialchars($details_data['email']); ?>">
             <?= htmlspecialchars($details_data["email"]); ?>
           </small>
         </div>
       </div>
 
-      <button class="style=color: var(--niru-primary) mt-2 m-2">Log Out</button>
+      <a href="../logout.php" class="btn btn-outline-danger btn-sm mt-3 m-2"><i class="bi bi-box-arrow-right me-1"></i> Log Out</a>
     </aside>
 
     <main class="dashboard-main">

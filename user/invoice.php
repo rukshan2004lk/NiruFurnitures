@@ -2,7 +2,6 @@
 session_start();
 require_once '../connection.php';
 
-// 1. Session check
 if (!isset($_SESSION['u'])) {
     header("Location: ../login.php");
     exit();
@@ -10,14 +9,13 @@ if (!isset($_SESSION['u'])) {
 
 $user = $_SESSION['u'];
 $user_id = (int)$user['user_id'];
-$order_id = (int)($_GET['id'] ?? 0);
+$order_id = (int)($_GET['order_id'] ?? $_GET['id'] ?? 0);
 
 if ($order_id <= 0) {
     header("Location: dashboard.php");
     exit();
 }
 
-// 2. Fetch Order Details & Delivery Status
 $order_query = "SELECT o.*, s.status_name 
                 FROM `orders` o 
                 LEFT JOIN `status` s ON o.order_status_id = s.status_id 
@@ -31,11 +29,9 @@ if ($order_rs->num_rows == 0) {
 
 $order = $order_rs->fetch_assoc();
 
-// 3. Fetch Payment Information
 $payment_rs = Database::search("SELECT * FROM `payments` WHERE `order_id` = '$order_id' LIMIT 1");
 $payment = ($payment_rs->num_rows > 0) ? $payment_rs->fetch_assoc() : null;
 
-// 4. Fetch Order Items
 $items_rs = Database::search("SELECT oi.*, 
                                      (SELECT image_path FROM product_images WHERE product_id = oi.product_id ORDER BY is_primary DESC, sort_order ASC LIMIT 1) AS image_path 
                               FROM `order_items` oi 
@@ -157,7 +153,10 @@ $items_rs = Database::search("SELECT oi.*,
                     <img src="<?php echo htmlspecialchars($img); ?>" alt="<?php echo htmlspecialchars($item['product_name']); ?>" class="rounded-2" style="width: 48px; height: 48px; object-fit: cover; background: #f8f9fa;">
                     <div>
                       <div class="fw-semibold text-dark"><?php echo htmlspecialchars($item['product_name']); ?></div>
-                      <small class="text-muted">Product ID: #<?php echo (int)$item['product_id']; ?></small>
+                      <?php if (!empty($item['color'])) { ?>
+                        <div><span class="badge bg-secondary-subtle text-dark border px-2 py-1 my-1" style="font-size: 11px;">Color: <?php echo htmlspecialchars($item['color']); ?></span></div>
+                      <?php } ?>
+                      <small class="text-muted d-block" style="font-size: 11px;">Product ID: #<?php echo (int)$item['product_id']; ?></small>
                     </div>
                   </div>
                 </td>

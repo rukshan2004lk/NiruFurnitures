@@ -14,11 +14,9 @@ $last_name = htmlspecialchars($user['last_name'] ?? '');
 $email = htmlspecialchars($user['email'] ?? '');
 $initials = strtoupper(substr($first_name, 0, 1) . substr($last_name, 0, 1));
 
-// 1. Stat Card: Total Orders
 $total_orders_rs = Database::search("SELECT COUNT(*) AS `cnt` FROM `orders` WHERE `user_id` = '$user_id'");
 $total_orders = (int)($total_orders_rs->fetch_assoc()['cnt'] ?? 0);
 
-// 2. Stat Card: In Transit (Statuses: 7/8/9 - Pending Dispatch, Packed, Out for Delivery)
 $in_transit_rs = Database::search("SELECT COUNT(*) AS `cnt` 
                                   FROM `orders` o 
                                   INNER JOIN `status` s ON o.order_status_id = s.status_id 
@@ -26,13 +24,11 @@ $in_transit_rs = Database::search("SELECT COUNT(*) AS `cnt`
                                     AND s.status_name IN ('Pending Dispatch', 'Packed', 'Out for Delivery')");
 $in_transit = (int)($in_transit_rs->fetch_assoc()['cnt'] ?? 0);
 
-// 3. Stat Card: Total Spent (Paid orders)
 $total_spent_rs = Database::search("SELECT SUM(`total_amount`) AS `total` 
                                    FROM `orders` 
                                    WHERE `user_id` = '$user_id' AND `payment_status` = 'paid'");
 $total_spent = (float)($total_spent_rs->fetch_assoc()['total'] ?? 0.00);
 
-// 4. Fetch All Orders with Status Names
 $orders_query = "SELECT o.*, s.status_name 
                  FROM `orders` o 
                  LEFT JOIN `status` s ON o.order_status_id = s.status_id 
@@ -352,29 +348,30 @@ $orders_count = $orders_rs->num_rows;
           <div class="col-6 col-md-3">
             <div class="footer-heading">Company</div>
             <ul class="footer-links list-unstyled">
-              <li><a href="../about.html" class="text-decoration-none text-muted">About Us</a></li>
+              <li><a href="../about.php" class="text-decoration-none text-muted">About Us</a></li>
               <li><a href="../shop.php" class="text-decoration-none text-muted">Shop Catalog</a></li>
-              <li><a href="../faq.html" class="text-decoration-none text-muted">FAQ</a></li>
+              <li><a href="../faq.php" class="text-decoration-none text-muted">FAQ</a></li>
             </ul>
           </div>
           <div class="col-6 col-md-3">
             <div class="footer-heading">Support</div>
             <ul class="footer-links list-unstyled">
-              <li><a href="../faq.html" class="text-decoration-none text-muted">Shipping Info</a></li>
-              <li><a href="../contact.html" class="text-decoration-none text-muted">Returns</a></li>
-              <li><a href="../contact.html" class="text-decoration-none text-muted">Contact Us</a></li>
+              <li><a href="../faq.php" class="text-decoration-none text-muted">Shipping Info</a></li>
+              <li><a href="../contact.php" class="text-decoration-none text-muted">Returns</a></li>
+              <li><a href="../contact.php" class="text-decoration-none text-muted">Contact Us</a></li>
             </ul>
           </div>
           <div class="col-12 col-md-3">
             <div class="footer-heading">Contact</div>
             <p class="mb-2" style="color: var(--niru-body-text)">nirufurni@gmail.com</p>
-            <p class="mb-0" style="color: var(--niru-body-text)">+94 11 234 5678</p>
+            <p class="mb-0" style="color: var(--niru-body-text)">076 4209970</p>
           </div>
         </div>
       </footer>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../assets/js/script.js"></script>
   </body>
 </html>

@@ -23,19 +23,13 @@ if (empty($cpassword)) {
 } else if ($cpassword === $npassword) {
     echo "New password cannot be the same as your current password.";
 } else {
-    // 1. Fetch current password hash from database
     $user_rs = Database::search("SELECT `password_hash` FROM `user` WHERE `email` = '" . $email . "'");
 
     if ($user_rs->num_rows === 1) {
         $user_data = $user_rs->fetch_assoc();
 
-        // 2. Verify current password matches the stored hash
         if (password_verify($cpassword, $user_data["password_hash"])) {
-            
-            // 3. Hash the new password securely
             $new_hash = password_hash($npassword, PASSWORD_BCRYPT);
-
-            // 4. Update the password in database
             Database::iud("UPDATE `user` SET `password_hash` = '" . $new_hash . "' WHERE `email` = '" . $email . "'");
 
             echo "success";
