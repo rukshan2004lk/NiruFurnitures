@@ -1,9 +1,9 @@
 <?php 
 session_start();
-include "connection.php";
+require_once "connection.php";
 
-$email    = $_POST["e"] ?? "";
-$password = $_POST["p"] ?? "";
+$email    = trim($_POST["e"] ?? "");
+$password = trim($_POST["p"] ?? "");
 
 if (empty($email)) {
     echo "Please Enter your Email.";
@@ -16,27 +16,33 @@ if (empty($email)) {
 } else if (strlen($password) < 5 || strlen($password) > 20) {
     echo "Password must contain between 5 to 20 characters.";
 } else {
-  
-    $rs = Database::search("SELECT * FROM `user` WHERE `email`='" . $email . "'");
-    $num = $rs->num_rows;
+    $query = "SELECT u.*, r.role_name 
+              FROM `user` u 
+              LEFT JOIN `user_role` r ON u.role_id = r.role_id 
+              WHERE u.email = '" . addslashes($email) . "'";
+              
+    $rs = Database::search($query);
 
-    if ($num > 0) {
+    if ($rs->num_rows > 0) {
         $user = $rs->fetch_assoc();
 
-        // 2. Check if account is active
-        if ($user["status"] !== "active") {
+        if (isset($user["status_id"]) && $user["status_id"] != 1) {
             echo "Your account has been deactivated. Please contact support.";
             exit();
         }
 
-         if ($user["role"] !== "admin") {
+        $role_id = (int)($user["role_id"] ?? 0);
+        $role_name = strtolower($user["role_name"] ?? "");
+
+        if ($role_id !== 1 && $role_name !== "admin") {
             echo "You don't have access. Please contact support.";
             exit();
         }
 
-     
-        if (password_verify($password, $user["password_hash"])) {
-          
+        $hashed_pwd = $user["password_hash"] ?? $user["password"] ?? "";
+
+        if (password_verify($password, $hashed_pwd) || $password === $hashed_pwd) {
+            $_SESSION["a"] = $user;
             $_SESSION["u"] = $user;
             echo "success";
         } else {
