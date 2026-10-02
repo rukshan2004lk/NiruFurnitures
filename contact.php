@@ -19,7 +19,7 @@ include 'header.php';
         
         <div class="col-12 col-lg-7">
           <div class="contact-form-card p-4 p-md-5 bg-white rounded-4 shadow-sm">
-            <form onsubmit="event.preventDefault(); showAlert('Thank you for contacting us! We will reply to your message soon.', 'success', 'Message Sent'); this.reset();">
+            <form id="contactForm" onsubmit="sendContact(event)">
               <div class="row g-4 mb-4">
                 
                 <div class="col-12 col-md-6">
@@ -36,10 +36,10 @@ include 'header.php';
               <div class="mb-4">
                 <label for="subjectSelect" class="form-label-custom">Subject</label>
                 <select class="form-select form-select-custom" id="subjectSelect">
-                  <option selected>Custom Commission</option>
-                  <option value="1">Order Status & Shipping</option>
-                  <option value="2">Product & Styling Inquiries</option>
-                  <option value="3">Trade & Wholesale Partnership</option>
+                  <option value="Custom Commission" selected>Custom Commission</option>
+                  <option value="Order Status & Shipping">Order Status & Shipping</option>
+                  <option value="Product & Styling Inquiries">Product & Styling Inquiries</option>
+                  <option value="Trade & Wholesale Partnership">Trade & Wholesale Partnership</option>
                 </select>
               </div>
 
@@ -109,3 +109,4 @@ include 'header.php';
   </main>
 
 <?php include 'footer.php'; ?>
+

@@ -35,8 +35,14 @@ switch ($sort) {
         $order_by = " ORDER BY `price` DESC";
         break;
     case "popular":
+        $order_by = " ORDER BY (SELECT COALESCE(AVG(`rating`), 0) FROM `reviews` WHERE `product_id` = `products`.`product_id`) DESC, `product_id` DESC";
+        break;
     case "sales":
+        $order_by = " ORDER BY (SELECT COALESCE(SUM(`quantity`), 0) FROM `order_items` WHERE `product_id` = `products`.`product_id`) DESC, `product_id` DESC";
+        break;
     case "newest":
+        $order_by = " ORDER BY `created_at` DESC";
+        break;
     default:
         $order_by = " ORDER BY `product_id` DESC";
         break;
@@ -47,7 +53,6 @@ $query = "SELECT * FROM `products`" . $where_sql . $order_by . " LIMIT " . $resu
 
 $product_rs = Database::search($query);
 
-// Current User ID for Wishlist Lookup
 $user_id = isset($_SESSION['u']) ? (int)$_SESSION['u']['user_id'] : 0;
 
 // Render Products
@@ -62,7 +67,6 @@ if ($product_rs->num_rows > 0) {
         $image_data = $image_rs->fetch_assoc();
         $image_src = $image_data["image_path"] ?? "Images/products/nordic_lounge.png";
 
-        // Check if item is already in this user's wishlist
         $is_wishlisted = false;
         if ($user_id > 0) {
             $wish_check = Database::search("SELECT `wishlist_id` FROM `wishlists` WHERE `user_id` = '$user_id' AND `product_id` = '$p_id'");
@@ -70,6 +74,11 @@ if ($product_rs->num_rows > 0) {
                 $is_wishlisted = true;
             }
         }
+
+        // Fetch average rating
+        $rating_rs = Database::search("SELECT AVG(`rating`) AS `avg_rating` FROM `reviews` WHERE `product_id` = '$p_id'");
+        $rating_data = $rating_rs->fetch_assoc();
+        $avg_rating = $rating_data["avg_rating"] ? round($rating_data["avg_rating"], 1) : 0.0;
 ?>
         <div class="col-12 col-sm-6 col-md-4">
             <div class="shop-product-card">
@@ -93,7 +102,7 @@ if ($product_rs->num_rows > 0) {
                                 </a>
                             </h3>
                             <div class="rating-badge">
-                                <i class="bi bi-star-fill text-warning me-1"></i>4.8
+                                <i class="bi bi-star-fill text-warning me-1"></i><?php echo number_format($avg_rating, 1); ?>
                             </div>
                         </div>
                         <p class="small text-muted mb-3" style="color: var(--niru-body-text);">

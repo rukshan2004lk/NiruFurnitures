@@ -21,7 +21,6 @@ if ($check_rs->num_rows === 0) {
     exit("Product not found.");
 }
 
-// Mark status as inactive/archived (status_id = 2) or delete if preferred
 Database::iud("UPDATE `products` SET `status_id` = 2 WHERE `product_id` = '$product_id'");
 
 echo "success";

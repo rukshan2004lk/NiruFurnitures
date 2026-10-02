@@ -78,7 +78,7 @@ $wishlist_rs = Database::search($wishlist_query);
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="../assets/css/style.css" />
+    <link rel="stylesheet" href="../assets/css/style.css?v=<?php echo time(); ?>" />
   </head>
   <body>
 
@@ -185,9 +185,14 @@ $wishlist_rs = Database::search($wishlist_query);
             <p class="text-muted small mb-0">Here is an overview of your activity, recent orders, and wishlist.</p>
           </div>
 
-          <div class="d-flex align-items-center gap-2">
-            <a href="../shop.php" class="btn btn-sm btn-outline-secondary px-3 py-2 fw-semibold">
-              <i class="bi bi-bag-plus me-1"></i> Browse Store
+          <div class="d-flex align-items-center gap-3">
+            <div class="input-group input-group-sm rounded-pill overflow-hidden" style="width: 250px; border: 1px solid var(--niru-border);">
+              <span class="input-group-text bg-white border-0 ps-3 pe-2"><i class="bi bi-search text-muted"></i></span>
+              <input type="text" class="form-control border-0 shadow-none ps-0 bg-white" placeholder="Search collection..." style="font-size: 14px;">
+            </div>
+  
+            <a href="../cart.php" class="btn btn-sm btn-light border-0 rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
+              <i class="bi bi-cart3 fs-6 text-dark"></i>
             </a>
           </div>
         </div>
@@ -263,7 +268,7 @@ $wishlist_rs = Database::search($wishlist_query);
           </div>
         </div>
 
-        <!-- Content Grid: Recent Orders & Wishlist -->
+        
         <div class="row g-4 mb-5">
           <!-- Recent Orders Table -->
           <div class="col-12 col-xl-8">
@@ -457,3 +462,4 @@ $wishlist_rs = Database::search($wishlist_query);
     <script src="../assets/js/script.js"></script>
   </body>
 </html>
+

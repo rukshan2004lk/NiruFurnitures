@@ -1,6 +1,7 @@
 <?php
 $page_title = "NiRu Furnitures - Stylish Furniture For Modern Living";
 include 'header.php';
+require_once 'connection.php';
 ?>
 
     <main style="padding-top: 80px">
@@ -73,7 +74,7 @@ include 'header.php';
                 <div class="bento-overlay">
                   <h3 class="fs-3 fw-semibold text-white mb-2">Sofas</h3>
                   <a
-                    href="shop.php"
+                    href="shop.php?category=1"
                     class="text-white text-decoration-underline fw-semibold small"
                     style="letter-spacing: 0.7px"
                     >Browse Collection</a
@@ -86,7 +87,7 @@ include 'header.php';
               <div class="row g-4">
                 
                 <div class="col-12 col-sm-6">
-                  <a href="shop.php" class="text-decoration-none">
+                  <a href="shop.php?category=1" class="text-decoration-none">
                     <div class="bento-card">
                       <img
                         src="Images/Category/chair.png"
@@ -100,7 +101,7 @@ include 'header.php';
                 </div>
 
                 <div class="col-12 col-sm-6">
-                  <a href="shop.php" class="text-decoration-none">
+                  <a href="shop.php?category=3" class="text-decoration-none">
                     <div class="bento-card">
                       <img
                         src="Images/Category/table.png"
@@ -114,7 +115,7 @@ include 'header.php';
                 </div>
 
                 <div class="col-12 col-sm-6">
-                  <a href="shop.php" class="text-decoration-none">
+                  <a href="shop.php?category=2" class="text-decoration-none">
                     <div class="bento-card">
                       <img
                         src="Images/Category/bed.png"
@@ -128,7 +129,7 @@ include 'header.php';
                 </div>
 
                 <div class="col-12 col-sm-6">
-                  <a href="shop.php" class="text-decoration-none">
+                  <a href="shop.php?category=4" class="text-decoration-none">
                     <div class="bento-card">
                       <img
                         src="Images/Category/office.png"
@@ -166,129 +167,46 @@ include 'header.php';
 
           <div class="row g-4">
             
+<?php
+$latest_rs = Database::search("SELECT p.*, c.name AS category_name FROM `products` p JOIN `categories` c ON p.category_id = c.category_id WHERE p.status_id = 1 ORDER BY p.created_at DESC LIMIT 4");
+if ($latest_rs->num_rows > 0) {
+    while ($product = $latest_rs->fetch_assoc()) {
+        $p_id = (int)$product["product_id"];
+        $image_rs = Database::search("SELECT `image_path` FROM `product_images` WHERE `product_id`='$p_id' ORDER BY `is_primary` DESC, `sort_order` ASC LIMIT 1");
+        $image_data = $image_rs->fetch_assoc();
+        $image_src = $image_data["image_path"] ?? "Images/featured/nordic_lounge.png";
+?>
             <div class="col-12 col-sm-6 col-lg-3">
               <div class="product-card">
                 <div class="product-img-wrapper">
-                  <a href="product-detail.php">
-                    <img
-                      src="Images/featured/nordic_lounge.png"
-                      alt="Nordic Lounge Chair"
-                    />
+                  <a href="product-detail.php?id=<?php echo $p_id; ?>">
+                    <img src="<?php echo htmlspecialchars($image_src); ?>" alt="<?php echo htmlspecialchars($product["name"]); ?>" />
                   </a>
-                  <button class="wishlist-btn" aria-label="Add to Wishlist">
+                  <button type="button" class="favorite-btn" onclick="toggleWishlist(<?php echo $p_id; ?>, this);" aria-label="Add to Wishlist">
                     <i class="bi bi-heart"></i>
                   </button>
                 </div>
                 <div class="p-4">
-                  <div class="category-badge mb-1">SEATING</div>
-                  <h3
-                    class="fs-5 fw-normal mb-2"
-                    style="color: var(--niru-primary)"
-                  >
-                    <a href="product-detail.php" class="text-decoration-none" style="color: inherit;">Nordic Lounge Chair</a>
+                  <div class="category-badge mb-1"><?php echo htmlspecialchars(strtoupper($product["category_name"])); ?></div>
+                  <h3 class="fs-5 fw-normal mb-2" style="color: var(--niru-primary)">
+                    <a href="product-detail.php?id=<?php echo $p_id; ?>" class="text-decoration-none" style="color: inherit;"><?php echo htmlspecialchars($product["name"]); ?></a>
                   </h3>
-                  <p
-                    class="fs-6 mb-0 fw-normal"
-                    style="color: var(--niru-body-text)"
-                  >
-                    Rs. 849.00
+                  <p class="fs-6 mb-0 fw-normal" style="color: var(--niru-body-text)">
+                    Rs. <?php echo number_format($product["price"], 2); ?>
                   </p>
                 </div>
               </div>
             </div>
-
-            <div class="col-12 col-sm-6 col-lg-3">
-              <div class="product-card">
-                <div class="product-img-wrapper">
-                  <a href="product-detail.php">
-                    <img
-                      src="Images/featured/sulptural_coffee_table.png"
-                      alt="Sculptural Coffee Table"
-                    />
-                  </a>
-                  <button class="wishlist-btn" aria-label="Add to Wishlist">
-                    <i class="bi bi-heart"></i>
-                  </button>
-                </div>
-                <div class="p-4">
-                  <div class="category-badge mb-1">LIVING ROOM</div>
-                  <h3
-                    class="fs-5 fw-normal mb-2"
-                    style="color: var(--niru-primary)"
-                  >
-                    <a href="product-detail.php" class="text-decoration-none" style="color: inherit;">Sculptural Coffee Table</a>
-                  </h3>
-                  <p
-                    class="fs-6 mb-0 fw-normal"
-                    style="color: var(--niru-body-text)"
-                  >
-                    Rs. 1,299.00
-                  </p>
-                </div>
-              </div>
+<?php
+    }
+} else {
+?>
+            <div class="col-12 text-center">
+              <p class="text-muted">No featured arrivals yet.</p>
             </div>
-
-            <div class="col-12 col-sm-6 col-lg-3">
-              <div class="product-card">
-                <div class="product-img-wrapper">
-                  <a href="product-detail.php">
-                    <img
-                      src="Images/featured/Linear_Oak.png"
-                      alt="Linear Oak Bookshelf"
-                    />
-                  </a>
-                  <button class="wishlist-btn" aria-label="Add to Wishlist">
-                    <i class="bi bi-heart"></i>
-                  </button>
-                </div>
-                <div class="p-4">
-                  <div class="category-badge mb-1">STORAGE</div>
-                  <h3
-                    class="fs-5 fw-normal mb-2"
-                    style="color: var(--niru-primary)"
-                  >
-                    <a href="product-detail.php" class="text-decoration-none" style="color: inherit;">Linear Oak Bookshelf</a>
-                  </h3>
-                  <p
-                    class="fs-6 mb-0 fw-normal"
-                    style="color: var(--niru-body-text)"
-                  >
-                    Rs. 620.00
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-12 col-sm-6 col-lg-3">
-              <div class="product-card">
-                <div class="product-img-wrapper">
-                  <a href="product-detail.php">
-                    <img
-                      src="Images/featured/Brass_desk.png"
-                      alt="Brass Desk Luminary"
-                    />
-                  </a>
-                  <button class="wishlist-btn" aria-label="Add to Wishlist">
-                    <i class="bi bi-heart"></i>
-                  </button>
-                </div>
-                <div class="p-4">
-                  <div class="category-badge mb-1">LIGHTING</div>
-                  <h3
-                    class="fs-5 fw-normal mb-2"
-                    style="color: var(--niru-primary)"
-                  >
-                    <a href="product-detail.php" class="text-decoration-none" style="color: inherit;">Brass Desk Luminary</a>
-                  </h3>
-                  <p
-                    class="fs-6 mb-0 fw-normal"
-                    style="color: var(--niru-body-text)"
-                  >
-                    Rs. 310.00
-                  </p>
-                </div>
-              </div>
-            </div>
+<?php
+}
+?>
           </div>
         </div>
       </section>
@@ -479,3 +397,4 @@ include 'header.php';
     </main>
 
 <?php include 'footer.php'; ?>
+

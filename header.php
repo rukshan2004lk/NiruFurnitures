@@ -41,7 +41,7 @@ if (isset($_SESSION["u"])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet" />
     
-    <link rel="stylesheet" href="<?php echo $base_path; ?>assets/css/style.css" />
+    <link rel="stylesheet" href="<?php echo $base_path; ?>assets/css/style.css?v=<?php echo time(); ?>" />
 </head>
 <body>
     <header>
@@ -108,3 +108,4 @@ if (isset($_SESSION["u"])) {
         </div>
       </nav>
     </header>
+

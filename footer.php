@@ -40,3 +40,4 @@ if (!isset($base_path)) {
   <script src="<?php echo $base_path; ?>assets/js/script.js"></script>
 </body>
 </html>
+

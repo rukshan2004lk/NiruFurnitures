@@ -13,7 +13,6 @@ if ($wishlist_id <= 0) {
     exit("Invalid item.");
 }
 
-// Ensure the item belongs to the logged-in user before deleting
 $check_rs = Database::search("SELECT `wishlist_id` FROM `wishlists` WHERE `wishlist_id` = '$wishlist_id' AND `user_id` = '$user_id'");
 
 if ($check_rs->num_rows == 0) {

@@ -103,7 +103,6 @@ if (strpos($selected_primary, 'existing_') === 0) {
     }
 }
 
-// Fallback: Ensure at least one image is marked primary
 $chk_primary = Database::search("SELECT `image_id` FROM `product_images` WHERE `product_id` = '$product_id' AND `is_primary` = 1");
 if ($chk_primary->num_rows === 0) {
     Database::iud("UPDATE `product_images` SET `is_primary` = 1 WHERE `product_id` = '$product_id' ORDER BY `image_id` ASC LIMIT 1");

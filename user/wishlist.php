@@ -3,8 +3,8 @@ session_start();
 require_once '../connection.php';
 
 if (!isset($_SESSION['u'])) {
-    header("Location: ../login.php");
-    exit();
+  header("Location: ../login.php");
+  exit();
 }
 
 $user = $_SESSION['u'];
@@ -14,7 +14,6 @@ $last_name  = htmlspecialchars($user['last_name'] ?? '');
 $email      = htmlspecialchars($user['email'] ?? '');
 $initials   = strtoupper(substr($first_name, 0, 1) . substr($last_name, 0, 1));
 
-// Fetch Wishlist Items joined with Products and Categories
 $wishlist_query = "SELECT w.wishlist_id, p.product_id, p.name, p.price, p.short_description, c.name AS category_name,
                           (SELECT image_path FROM product_images WHERE product_id = p.product_id ORDER BY is_primary DESC, sort_order ASC LIMIT 1) AS image_path 
                    FROM `wishlists` w 
@@ -27,19 +26,21 @@ $wishlist_count = $wishlist_rs->num_rows;
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NiRu Furnitures - Your Collection (Wishlist)</title>
-  
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-  
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/style.css?v=<?php echo time(); ?>">
 </head>
+
 <body>
 
   <!-- Mobile Topbar -->
@@ -62,7 +63,9 @@ $wishlist_count = $wishlist_rs->num_rows;
         <li class="nav-item"><a href="orders.php" class="nav-link text-muted"><i class="bi bi-bag me-2"></i>My Orders</a></li>
         <li class="nav-item"><a href="wishlist.php" class="nav-link active fw-bold text-dark"><i class="bi bi-heart me-2"></i>Saved Wishlist</a></li>
         <li class="nav-item"><a href="settings.php" class="nav-link text-muted"><i class="bi bi-gear me-2"></i>Account Settings</a></li>
-        <li class="nav-item"><hr class="dropdown-divider"></li>
+        <li class="nav-item">
+          <hr class="dropdown-divider">
+        </li>
         <li class="nav-item"><a href="../index.php" class="nav-link text-primary"><i class="bi bi-arrow-left me-2"></i>Back to Storefront</a></li>
         <li class="nav-item"><a href="../logout.php" class="nav-link text-danger"><i class="bi bi-box-arrow-right me-2"></i>Log Out</a></li>
       </ul>
@@ -95,7 +98,7 @@ $wishlist_count = $wishlist_rs->num_rows;
         </a>
       </li>
     </ul>
- 
+
     <div class="user-profile-badge mt-auto">
       <div class="avatar-sm"><?php echo $initials ?: 'U'; ?></div>
       <div class="overflow-hidden">
@@ -111,84 +114,79 @@ $wishlist_count = $wishlist_rs->num_rows;
 
   <!-- Main Content -->
   <main class="dashboard-main">
+
     
-    <div class="d-flex flex-column flex-lg-row align-items-lg-end justify-content-between gap-4 mb-5">
+    <div class="top-header-bar d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
       <div>
-        <nav aria-label="breadcrumb" class="mb-2">
-          <ol class="breadcrumb mb-0">
-            <li class="breadcrumb-item"><a href="../shop.php" class="text-decoration-none text-muted">Store</a></li>
-            <li class="breadcrumb-item active fw-bold" style="color: var(--niru-primary);">Wishlist</li>
-          </ol>
-        </nav>
-        <h1 class="display-4 fw-bold mb-2" style="color: var(--niru-primary); line-height: 1.1;">
+        <h1 class="fs-3 fw-semibold mb-1" style="color: var(--niru-primary);">
           Your Collection
         </h1>
-        <p class="fs-5 text-muted mb-0" style="max-width: 620px;">
+        <p class="text-muted small mb-0">
           A curated selection of your favorite pieces. Each item in your wishlist represents a step towards a more serene and intentional home.
         </p>
       </div>
 
-      <div class="d-flex align-items-center gap-3">
-        <?php if ($wishlist_count > 0) { ?>
-          <button class="btn btn-outline-secondary rounded-pill px-3 py-2" onclick="shareWishlist();">
+      <?php if ($wishlist_count > 0) { ?>
+        <div class="d-flex align-items-center gap-2 flex-shrink-0">
+          <button type="button" class="btn btn-outline-secondary rounded-pill px-3 py-2 btn-sm" onclick="shareWishlist();">
             <i class="bi bi-share me-1"></i> Share List
           </button>
-          <button class="btn btn-niru-primary rounded-pill px-3 py-2" onclick="addAllToCart();">
+          <button type="button" class="btn btn-niru-primary rounded-pill px-3 py-2 btn-sm" onclick="addAllToCart();">
             <i class="bi bi-bag-plus me-1"></i> Add All to Cart
           </button>
-        <?php } ?>
-      </div>
+        </div>
+      <?php } ?>
     </div>
 
     <div class="row g-4 mb-5">
-      
-      <?php 
+
+      <?php
       if ($wishlist_count > 0) {
-        while ($item = $wishlist_rs->fetch_assoc()) { 
+        while ($item = $wishlist_rs->fetch_assoc()) {
           $thumb = !empty($item['image_path']) ? '../' . $item['image_path'] : '../Images/products/nordic_lounge.png';
       ?>
-        <div class="col-12 col-md-6 col-xl-4 wishlist-card-item" data-product-id="<?php echo $item['product_id']; ?>">
-          <div class="collection-card h-100 d-flex flex-column">
-            <div class="collection-img-box position-relative">
-              <img src="<?php echo htmlspecialchars($thumb); ?>" alt="<?php echo htmlspecialchars($item['name']); ?>" style="width: 100%; height: 260px; object-fit: cover;">
-              <button class="remove-wishlist-btn" onclick="removeFromWishlist(<?php echo $item['wishlist_id']; ?>)" aria-label="Remove item">
-                <i class="bi bi-heart-fill text-danger"></i>
-              </button>
-            </div>
-            <div class="p-4 d-flex flex-column justify-content-between flex-grow-1">
-              <div>
-                <div class="d-flex align-items-center justify-content-between mb-2">
-                  <div>
-                    <div class="category-micro-tag mb-1 text-uppercase text-muted small fw-bold">
-                      <?php echo htmlspecialchars($item['category_name'] ?? 'FURNITURE'); ?>
-                    </div>
-                    <h3 class="fs-5 fw-semibold mb-0" style="color: var(--niru-primary);">
-                      <a href="../product-detail.php?id=<?php echo $item['product_id']; ?>" class="text-decoration-none text-dark">
-                        <?php echo htmlspecialchars($item['name']); ?>
-                      </a>
-                    </h3>
-                  </div>
-                  <span class="fs-5 fw-semibold" style="color: var(--niru-primary);">Rs. <?php echo number_format($item['price'], 2); ?></span>
-                </div>
-                <p class="small text-muted mb-4">
-                  <?php echo htmlspecialchars($item['short_description'] ?? 'Sculptural elegance meets ergonomic comfort.'); ?>
-                </p>
+          <div class="col-12 col-md-6 col-xl-4 wishlist-card-item" data-product-id="<?php echo $item['product_id']; ?>">
+            <div class="collection-card h-100 d-flex flex-column">
+              <div class="collection-img-box position-relative">
+                <img src="<?php echo htmlspecialchars($thumb); ?>" alt="<?php echo htmlspecialchars($item['name']); ?>" style="width: 100%; height: 260px; object-fit: cover;">
+                <button class="remove-wishlist-btn" onclick="removeFromWishlist(<?php echo $item['wishlist_id']; ?>)" aria-label="Remove item">
+                  <i class="bi bi-heart-fill text-danger"></i>
+                </button>
               </div>
-              <div class="d-flex gap-2">
-                <button type="button" class="btn btn-niru-primary flex-grow-1 py-2" onclick="addSingleToCart(<?php echo $item['product_id']; ?>);">
-                  Add to Cart
-                </button>
-                <button class="btn btn-outline-danger px-3 py-2" onclick="removeFromWishlist(<?php echo $item['wishlist_id']; ?>);" title="Remove">
-                  <i class="bi bi-trash"></i>
-                </button>
+              <div class="p-4 d-flex flex-column justify-content-between flex-grow-1">
+                <div>
+                  <div class="d-flex align-items-center justify-content-between mb-2">
+                    <div>
+                      <div class="category-micro-tag mb-1 text-uppercase text-muted small fw-bold">
+                        <?php echo htmlspecialchars($item['category_name'] ?? 'FURNITURE'); ?>
+                      </div>
+                      <h3 class="fs-5 fw-semibold mb-0" style="color: var(--niru-primary);">
+                        <a href="../product-detail.php?id=<?php echo $item['product_id']; ?>" class="text-decoration-none text-dark">
+                          <?php echo htmlspecialchars($item['name']); ?>
+                        </a>
+                      </h3>
+                    </div>
+                    <span class="fs-5 fw-semibold" style="color: var(--niru-primary);">Rs. <?php echo number_format($item['price'], 2); ?></span>
+                  </div>
+                  <p class="small text-muted mb-4">
+                    <?php echo htmlspecialchars($item['short_description'] ?? 'Sculptural elegance meets ergonomic comfort.'); ?>
+                  </p>
+                </div>
+                <div class="d-flex gap-2">
+                  <button type="button" class="btn btn-niru-primary flex-grow-1 py-2" onclick="addSingleToCart(<?php echo $item['product_id']; ?>);">
+                    Add to Cart
+                  </button>
+                  <button class="btn btn-outline-danger px-3 py-2" onclick="removeFromWishlist(<?php echo $item['wishlist_id']; ?>);" title="Remove">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      <?php 
+        <?php
         }
-      } else { 
-      ?>
+      } else {
+        ?>
         <div class="col-12 text-center py-5">
           <div class="card border-0 shadow-sm rounded-4 p-5">
             <i class="bi bi-heartbreak display-3 text-muted mb-3"></i>
@@ -250,4 +248,5 @@ $wishlist_count = $wishlist_rs->num_rows;
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="../assets/js/script.js"></script>
 </body>
+
 </html>

@@ -66,7 +66,6 @@ for ($i = 0; $i < $file_count; $i++) {
     }
 }
 
-// Fallback: If chosen index was skipped or invalid, set the first saved image as primary
 $p_check = Database::search("SELECT `image_id` FROM `product_images` WHERE `product_id` = '$product_id' AND `is_primary` = 1");
 if ($p_check->num_rows === 0) {
     Database::iud("UPDATE `product_images` SET `is_primary` = 1 WHERE `product_id` = '$product_id' ORDER BY `image_id` ASC LIMIT 1");

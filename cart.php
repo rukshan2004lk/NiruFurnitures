@@ -120,7 +120,7 @@ include 'header.php';
                 <span class="fs-4 fw-bold" style="color: var(--niru-primary);">Rs. <?php echo number_format($subtotal, 2); ?></span>
               </div>
 
-              <!-- Cart Checkout: direct to checkout.php with product_id=0 -->
+              
               <a href="checkout.php" class="btn btn-niru-primary w-100 py-3 rounded-3 text-center fw-bold fs-6 shadow-sm mb-3">
                 Proceed to Checkout <i class="bi bi-arrow-right ms-2"></i>
               </a>
