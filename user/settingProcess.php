@@ -44,8 +44,8 @@ if (empty($fname)) {
         `first_name` = '" . $fname . "',
         `last_name` = '" . $lname . "',
         `phone` = '" . $mobile . "',
-        `line_1` = '" . $line1 . "',
-        `line_2` = '" . $line2 . "',
+        `address_line1` = '" . $line1 . "',
+        `address_line2` = '" . $line2 . "',
         `city` = '" . $city . "',
         `postal_code` = '" . $pcode . "'
         WHERE `email` = '" . $email . "'");

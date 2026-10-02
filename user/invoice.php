@@ -72,7 +72,7 @@ $items_rs = Database::search("SELECT oi.*,
 
   <div class="container-xl max-w-1320">
     
-    <!-- Action Bar (Hidden during Print) -->
+    
     <div class="d-flex justify-content-between align-items-center mb-4 no-print">
       <a href="dashboard.php" class="btn btn-outline-dark rounded-3 px-3">
         <i class="bi bi-arrow-left me-1"></i> Back to Dashboard

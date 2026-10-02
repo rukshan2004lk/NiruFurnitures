@@ -101,7 +101,7 @@ $categories_num = $categories_rs ? $categories_rs->num_rows : 0;
 
           <!-- Dynamic Product Grid Container -->
           <div class="row g-4 mb-5" id="productContainer">
-            <!-- Loaded dynamically via loadProductsProcess.php -->
+            
           </div>
 
         </section>

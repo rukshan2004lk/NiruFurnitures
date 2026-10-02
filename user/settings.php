@@ -25,7 +25,7 @@ require_once "../connection.php";
     href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
     rel="stylesheet" />
 
-  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="stylesheet" href="../assets/css/style.css?v=<?php echo time(); ?>" />
 </head>
 
 <body>
@@ -146,14 +146,7 @@ require_once "../connection.php";
           Settings
         </h1>
         <div class="d-flex align-items-center gap-3">
-          <button class="btn btn-link text-dark p-0" aria-label="Notifications">
-            <i class="bi bi-bell fs-5"></i>
-          </button>
-          <button
-            class="btn btn-link text-dark p-0"
-            aria-label="Settings Quick Link">
-            <i class="bi bi-gear fs-5"></i>
-          </button>
+      
         </div>
       </div>
 
@@ -201,7 +194,7 @@ require_once "../connection.php";
                   class="form-control form-control-custom"
                   id="line1"
                   placeholder="e.g. No. 123, Main Street"
-                  value="<?php echo ($details_data['line_1'] ?? ''); ?>" />
+               value="<?php echo htmlspecialchars($details_data['line_2'] ?? $details_data['address_line1'] ?? ''); ?>" />
               </div>
 
               <!-- Address Line 2 -->
@@ -362,3 +355,4 @@ require_once "../connection.php";
 </body>
 
 </html>
+

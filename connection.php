@@ -13,7 +13,7 @@ class Database
             Database::$connection = new mysqli(
                 "localhost",
                 "root",
-                "rukshan123",
+                "Rukshan123",
                 "niru_furniture",
                 3306
             );
@@ -29,7 +29,7 @@ class Database
         Database::setUpConnection();
         $result = Database::$connection->query($q);
         
-        // If query fails, print the exact MySQL error so you can see why it didn't save
+
         if (!$result) {
             die("SQL Error: " . Database::$connection->error . " | Query: " . $q);
         }

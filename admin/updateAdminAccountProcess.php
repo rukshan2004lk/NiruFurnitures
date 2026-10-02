@@ -17,7 +17,6 @@ if (empty($first_name)) {
     exit("First Name cannot be empty.");
 }
 
-// Update admin details in the user table
 Database::iud("UPDATE `user` SET 
                `first_name` = '" . addslashes($first_name) . "', 
                `last_name` = '" . addslashes($last_name) . "', 

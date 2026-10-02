@@ -60,7 +60,6 @@ if (isset($_SESSION['u'])) {
         $is_wishlisted = true;
     }
 
-    // Fetch Cart Quantity for Navbar Badge
     $cart_badge_rs = Database::search("SELECT SUM(ci.quantity) AS `qty` 
                                       FROM `cart_items` ci 
                                       INNER JOIN `carts` c ON ci.cart_id = c.cart_id 
@@ -182,7 +181,7 @@ include 'header.php';
               </div>
             </div>
 
-            <!-- Add To Cart / Purchase Controls / Wishlist Toggle -->
+            
             <div class="d-flex flex-wrap align-items-center gap-2">
               <div class="quantity-control d-flex align-items-center border rounded-pill px-3 py-1">
                 <button type="button" class="btn btn-sm border-0 p-0 me-2" onclick="adjustQty(-1);">-</button>

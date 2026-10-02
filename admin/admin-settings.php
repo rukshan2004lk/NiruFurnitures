@@ -11,7 +11,6 @@ if (!isset($_SESSION['a']) || ((int)($_SESSION['a']['role_id'] ?? 0) !== 1)) {
 
 $user_id = (int)($_SESSION['a']['user_id'] ?? 0);
 
-// Fetch fresh details from database
 $user_rs = Database::search("SELECT * FROM `user` WHERE `user_id` = '$user_id'");
 $admin = $user_rs->fetch_assoc();
 
@@ -90,17 +89,12 @@ $phone      = htmlspecialchars($admin['phone'] ?? '');
   <!-- Main Content -->
   <main class="admin-main">
     
-    <div class="top-header-glass">
-      <div>
-        <h1 class="fs-4 fw-semibold mb-0" style="color: var(--niru-primary);">Settings</h1>
-        <nav aria-label="breadcrumb">
-          <ol class="breadcrumb mb-0 small">
-            <li class="breadcrumb-item"><a href="admin-dashboard.php" class="text-decoration-none text-muted">Dashboard</a></li>
-            <li class="breadcrumb-item active fw-semibold" style="color: #1b1c1c;">Account Settings</li>
-          </ol>
-        </nav>
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-5">
+        <div>
+          <h1 class="display-6 fw-bold mb-1" style="color: var(--niru-primary);">Settings</h1>
+          <p class="text-muted mb-0">Manage your administrator account preferences and details.</p>
+        </div>
       </div>
-    </div>
 
     <div class="admin-content-canvas">
       
@@ -176,3 +170,4 @@ $phone      = htmlspecialchars($admin['phone'] ?? '');
   <script src="../assets/js/script.js"></script>
 </body>
 </html>
+

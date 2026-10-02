@@ -14,7 +14,6 @@ if ($item_id <= 0) {
     exit("Invalid item.");
 }
 
-// Security: Verify item belongs to user's cart
 $check_rs = Database::search("SELECT ci.cart_item_id, ci.product_id, i.quantity AS stock 
                              FROM `cart_items` ci 
                              INNER JOIN `carts` c ON ci.cart_id = c.cart_id 

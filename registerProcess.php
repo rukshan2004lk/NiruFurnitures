@@ -34,7 +34,7 @@ if (empty($fname)) {
     echo("Invalid Mobile Number.");
 
     } else {
-    // Check if email already exists
+
     $rs = Database::search("SELECT * FROM `user` WHERE `email`='" . $email . "'");
     $num = $rs->num_rows;
 
