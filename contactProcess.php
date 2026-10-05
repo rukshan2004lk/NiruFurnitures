@@ -31,12 +31,13 @@ if (empty($name) || !filter_var($email, FILTER_VALIDATE_EMAIL) || empty($message
 $mail = new PHPMailer(true);
 
 try {
+    $env = parse_ini_file(__DIR__ . '/.env');
     // 3. SMTP configuration
     $mail->isSMTP();
     $mail->Host       = 'smtp.gmail.com';
     $mail->SMTPAuth   = true;
     $mail->Username   = 'sandeesharukshan321@gmail.com';
-    $mail->Password   = 'lqpvunpdrjoemjim'; // 16-char Google App Password (no spaces)
+    $mail->Password   = $env['MAIL_PASSWORD']; // 16-char Google App Password (no spaces)
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
     $mail->Port       = 587;
 
