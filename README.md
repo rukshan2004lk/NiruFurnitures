@@ -1,83 +1,74 @@
 # NiRu Furnitures
 
-NiRu Furnitures is a PHP/MySQL furniture e-commerce application for browsing products, managing a shopping cart, placing orders, and maintaining user and administrator accounts.
+NiRu Furnitures is a PHP/MySQL furniture e-commerce application designed for browsing products, managing a shopping cart, placing orders, and maintaining comprehensive user and administrator dashboards.
 
 ## Technology Stack
 
-- PHP pages and server-side processes
-- MySQL database accessed through `connection.php`
-- Bootstrap 5 and Bootstrap Icons
-- Custom CSS in `assets/css/style.css`
-- Vanilla JavaScript in `assets/js/script.js`
-- SweetAlert2 for client-side notifications
+- **Backend**: PHP (Pages & Server-Side Processes)
+- **Database**: MySQL (accessed via `connection.php`)
+- **Frontend**: HTML5, Bootstrap 5, Bootstrap Icons, Custom CSS (`assets/css/style.css`)
+- **JavaScript**: Vanilla JS (`assets/js/script.js`), SweetAlert2 for client-side notifications
+- **Email Service**: PHPMailer for contact form submissions
 
 ## Features
 
 ### Customer Storefront
-
-- Homepage with hero content, furniture categories, and featured products
-- Product catalogue and product detail pages
-- Shopping cart and checkout flow
-- User registration, login, logout, and account settings
-- Order history and invoice viewing
-- Wishlist management
-- Product reviews
-- Contact and FAQ pages
+- **Store & Browsing**: Homepage with hero content, featured products, categories, and a product catalogue.
+- **Product Details**: Individual product pages featuring details, images, and user reviews.
+- **Shopping Flow**: Dynamic cart management and a complete checkout process.
+- **Authentication**: User registration, login, and secure logout.
+- **User Dashboard**: Customers can manage their account settings, change passwords, view order history, print invoices, and manage their wishlist.
+- **Support Pages**: Contact Us (powered by PHPMailer) and FAQ page.
 
 ### Administrator Portal
-
-- Admin authentication and dashboard
-- Product creation, editing, viewing, and deletion
-- User management and role updates
-- Order review and order status updates
-- Administrator account and password settings
+- **Dashboard Overview**: Admin dashboard for high-level site metrics.
+- **Product Management**: Create, read, update, and delete (CRUD) products and categories.
+- **Order Management**: Review customer orders and update order fulfillment statuses.
+- **User Management**: View registered users and update user roles.
+- **Admin Settings**: Dedicated panel to update admin credentials and profile.
+- **Secure Access**: Admin authentication and secure logout.
 
 ## Project Structure
 
 ```text
 NiruFurnitures/
-├── index.php                         # Storefront homepage
-├── shop.php                          # Product catalogue
-├── product-detail.php                # Product details
-├── cart.php                           # Shopping cart
-├── checkout.php                       # Checkout form
+├── index.php                          # Storefront homepage
+├── shop.php                           # Product catalogue
+├── product-detail.php                 # Product detail & reviews
+├── cart.php & checkout.php            # Shopping cart and checkout flow
 ├── about.php, contact.php, faq.php    # Informational pages
 ├── login.php, register.php            # Customer authentication
-├── *Process.php                       # Form and AJAX request handlers
-├── connection.php                     # Database connection and query helper
-├── header.php, footer.php             # Shared layout components
-├── assets/
-│   ├── css/style.css                  # Application styles
-│   └── js/script.js                   # Client-side interactions
-├── Images/                            # Product and category images
-├── user/                              # Customer dashboard, orders, wishlist, settings
-└── admin/                             # Administrator dashboard and management pages
+├── connection.php                     # MySQL Database connection helper
+├── header.php, footer.php             # Shared layout UI components
+├── *Process.php                       # Core root-level request handlers
+├── .env                               # Environment configurations (e.g. Mail credentials)
+├── PHPMailer/                         # Email sending library
+├── Images/                            # Local product & category image storage
+├── assets/                            # Static CSS and JS assets
+├── user/                              # Customer dashboards (Orders, Settings, Wishlist)
+└── admin/                             # Administrator panel and management scripts
 ```
 
 ## Run Locally with XAMPP
 
-1. Place the project in the Apache document root, for example:
-   `C:\xampp\htdocs\NiruFurnitures`
-2. Start **Apache** and **MySQL** from the XAMPP Control Panel.
-3. Create the project database and required tables in phpMyAdmin.
-4. Update the database credentials in `connection.php` if they differ from the local setup.
-5. Open the application at:
-   `http://localhost/NiruFurnitures/`
+1. **Clone/Move Project**: Place the project folder in your Apache document root.
+   `C:\xampp\htdocs\nirufurnitures`
+2. **Start Server**: Open the XAMPP Control Panel and start **Apache** and **MySQL**.
+3. **Database Setup**: Open phpMyAdmin, create a database named `niru_furniture` (or as configured in `connection.php`), and import the necessary tables (if you have an export).
+4. **Database Configuration**: Ensure `connection.php` holds the correct MySQL credentials (e.g., user: `root`, password: `your_password`).
+5. **Environment Setup**: Ensure you have an `.env` file in the root directory for features like the contact form email system:
+   ```ini
+   MAIL_PASSWORD="your_google_app_password"
+   ```
+6. **Launch Application**: Open your browser and navigate to:
+   `http://localhost/nirufurnitures/`
 
-The application requires a running PHP/MySQL server; PHP files should not be opened directly from the file system.
+*Note: The application requires a running PHP/MySQL server. PHP files will not render correctly if opened directly from the file system.*
 
-## Main Request Flows
+## Key Request & Process Flows
 
-- Product loading: `loadProductsProcess.php`
-- Cart operations: `addToCartProcess.php` and `cartProcess.php`
-- Checkout and order creation: `checkoutProcess.php`
-- Authentication: `loginProcess.php`, `registerProcess.php`, and `logout.php`
-- Wishlist operations: `toggleWishlistProcess.php` and `user/removeWishlistProcess.php`
-- Reviews: `addReviewProcess.php`
-- Admin product management: files in `admin/` beginning with `add`, `get`, `update`, or `delete`
-   - Copy or clone the repository into your XAMPP `htdocs` folder: `c:/xampp/htdocs/nirufurniture`.
-   - Start Apache via XAMPP Control Panel.
-   - Open your browser and navigate to `http://localhost/nirufurniture`.
-
-2. **Option B (Direct File Access / Live Server)**:
-   - Double-click `index.html` or open it in any Web Browser (Chrome, Firefox, Edge).
+- **Shopping**: `loadProductsProcess.php`, `addToCartProcess.php`, `cartProcess.php`, `checkoutProcess.php`
+- **Authentication**: `loginProcess.php`, `registerProcess.php`, `adminLoginProcess.php`, `logout.php`, `admin/admin-logout.php`
+- **Interactions**: `toggleWishlistProcess.php`, `addReviewProcess.php`, `contactProcess.php`
+- **User Scripts (in `user/`)**: `settingProcess.php`, `removeWishlistProcess.php`
+- **Admin Scripts (in `admin/`)**: Processes for adding, updating, and deleting products, updating orders, and changing admin settings.
