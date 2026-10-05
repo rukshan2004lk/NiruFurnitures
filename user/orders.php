@@ -61,7 +61,7 @@ $orders_count = $orders_rs->num_rows;
       rel="stylesheet"
     />
     
-    <link rel="stylesheet" href="../assets/css/style.css" />
+    <link rel="stylesheet" href="../assets/css/style.css?v=<?php echo time(); ?>" />
   </head>
   <body>
     
@@ -160,7 +160,7 @@ $orders_count = $orders_rs->num_rows;
       
       <div class="orders-container">
         
-        <!-- Header Bar with Filter & Search -->
+        
         <div class="top-header-bar d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
           <div>
             <h1 class="fs-3 fw-semibold mb-0" style="color: var(--niru-primary)">
@@ -270,7 +270,6 @@ $orders_count = $orders_rs->num_rows;
                     $order_date = date("M d, Y", strtotime($order['placed_at']));
                     $status_name = $order['status_name'] ?? 'Pending Dispatch';
 
-                    // Assign styling based on status
                     $badge_class = 'status-shipped';
                     if (stripos($status_name, 'Delivered') !== false) {
                       $badge_class = 'status-delivered';
@@ -375,3 +374,4 @@ $orders_count = $orders_rs->num_rows;
     <script src="../assets/js/script.js"></script>
   </body>
 </html>
+

@@ -23,7 +23,6 @@ if (empty($review_text)) {
     exit("Please write a short review before submitting.");
 }
 
-// Check if user already reviewed this product; if so, update it, else insert new
 $existing_rs = Database::search("SELECT `review_id` FROM `reviews` WHERE `product_id` = '$product_id' AND `user_id` = '$user_id'");
 
 if ($existing_rs->num_rows > 0) {

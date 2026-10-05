@@ -179,7 +179,7 @@ $orders_rs = Database::search($orders_query);
       <div class="table-header-bar d-flex align-items-center justify-content-between mb-3">
         <h2 class="fs-4 fw-semibold mb-0" style="color: var(--niru-primary);">Orders</h2>
         
-        <!-- Filter Dropdown showing only IDs 6 to 11 -->
+        
         <div class="dropdown">
           <button class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-2 px-3 py-2 rounded-2 dropdown-toggle" type="button" data-bs-toggle="dropdown">
             <i class="bi bi-funnel"></i> Filter Status
@@ -228,7 +228,6 @@ $orders_rs = Database::search($orders_query);
                 $status_name = $order['status_name'] ?? 'Pending Dispatch';
                 $status_id = (int)($order['order_status_id'] ?? 6);
 
-                // Styling tailored to statuses 6 through 11
                 $dot_class = 'dot-pill-pending';
                 if ($status_id === 9) { // Delivered
                   $dot_class = 'dot-pill-delivered';
@@ -287,7 +286,7 @@ $orders_rs = Database::search($orders_query);
 
   </main>
 
-  <!-- ======================== STATUS EDIT MODAL (LIMITED TO 6-11) ======================== -->
+  
   <div class="modal fade" id="changeOrderStatusModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content rounded-4 border-0 shadow">

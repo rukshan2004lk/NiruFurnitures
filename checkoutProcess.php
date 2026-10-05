@@ -120,10 +120,6 @@ $order_fetch = Database::search("SELECT `order_id` FROM `orders` WHERE `order_nu
 $order_data = $order_fetch->fetch_assoc();
 $order_id = (int)$order_data['order_id'];
 
-try {
-    Database::iud("ALTER TABLE `order_items` ADD COLUMN `color` VARCHAR(50) DEFAULT NULL");
-} catch (Throwable $e) {}
-
 foreach ($order_items as $item) {
     $p_id       = (int)$item['product_id'];
     $p_name     = addslashes($item['product_name']);

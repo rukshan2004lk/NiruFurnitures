@@ -70,7 +70,7 @@ while ($c = $cat_query_rs->fetch_assoc()) {
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
   
-  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/style.css?v=<?php echo time(); ?>">
 </head>
 <body>
 
@@ -123,18 +123,12 @@ while ($c = $cat_query_rs->fetch_assoc()) {
   <!-- Main Canvas -->
   <main class="admin-main">
     
-    <div class="top-header-glass">
-      <div>
-        <h1 class="fs-4 fw-semibold mb-0" style="color: var(--niru-primary);">Products</h1>
-        <nav aria-label="breadcrumb">
-          <ol class="breadcrumb mb-0 small">
-            <li class="breadcrumb-item"><a href="admin-dashboard.php" class="text-decoration-none text-muted">Dashboard</a></li>
-            <li class="breadcrumb-item active fw-semibold" style="color: #1b1c1c;">Inventory</li>
-          </ol>
-        </nav>
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-5">
+        <div>
+          <h1 class="display-6 fw-bold mb-1" style="color: var(--niru-primary);">Products</h1>
+          <p class="text-muted mb-0">Manage your store's inventory and product details.</p>
+        </div>
       </div>
-   
-    </div>
 
     <div class="admin-content-canvas">
       
@@ -262,7 +256,7 @@ while ($c = $cat_query_rs->fetch_assoc()) {
 
   </main>
 
-  <!-- ======================== 1. ADD PRODUCT MODAL ======================== -->
+  
   <div class="modal fade" id="addProductModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content rounded-4 border-0 shadow">
@@ -340,7 +334,7 @@ while ($c = $cat_query_rs->fetch_assoc()) {
     </div>
   </div>
 
-  <!-- ======================== 2. EDIT PRODUCT MODAL ======================== -->
+  
   <div class="modal fade" id="editProductModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content rounded-4 border-0 shadow">
@@ -429,3 +423,4 @@ while ($c = $cat_query_rs->fetch_assoc()) {
   <script src="../assets/js/script.js"></script>
 </body>
 </html>
+

@@ -20,7 +20,7 @@ $checkout_items = [];
 $subtotal = 0.00;
 
 if ($product_id > 0) {
-    // Mode A: Direct Buy Now
+
     $product_rs = Database::search("SELECT * FROM `products` WHERE `product_id` = '$product_id' AND `status_id` = 1");
     if ($product_rs->num_rows == 0) {
         header("Location: shop.php");
@@ -45,7 +45,7 @@ if ($product_id > 0) {
         'image'      => $img_src
     ];
 } else {
-    // Mode B: Entire Cart Checkout
+
     $cart_query = "SELECT ci.quantity, ci.unit_price, ci.color, p.name, 
                           (SELECT image_path FROM product_images WHERE product_id = p.product_id ORDER BY is_primary DESC, sort_order ASC LIMIT 1) AS image_path 
                    FROM `carts` c 
@@ -79,7 +79,6 @@ if ($product_id > 0) {
 $tax = 0.00;
 $total = $subtotal + $tax;
 
-// Fetch fresh user profile details
 $user_rs = Database::search("SELECT * FROM `user` WHERE `user_id` = '$user_id'");
 $user_data = ($user_rs->num_rows > 0) ? $user_rs->fetch_assoc() : $user_session;
 ?>
@@ -104,7 +103,7 @@ include 'header.php';
       <form onsubmit="event.preventDefault();">
         <div class="row g-4">
 
-          <!-- Left Column: Delivery and Payment Forms -->
+          
           <div class="col-12 col-lg-7">
 
             <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
@@ -189,7 +188,7 @@ include 'header.php';
 
           </div>
 
-          <!-- Right Column: Dynamic Order Summary -->
+          
           <div class="col-12 col-lg-5">
             <div class="card border-0 shadow-sm rounded-4 p-4 sticky-top" style="top: 100px; background-color: var(--niru-bg-alt);">
               <h5 class="fw-bold mb-4" style="color: var(--niru-primary);">Review Your Order</h5>

@@ -31,7 +31,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const productContainer = document.getElementById("productContainer");
   if (productContainer) {
-    productShow(0); 
+    const urlParams = new URLSearchParams(window.location.search);
+    const categoryParam = urlParams.get('category');
+    if (categoryParam) {
+      const targetBtn = document.querySelector('.category-filter-btn[data-category-id="' + categoryParam + '"]');
+      if (targetBtn) {
+        targetBtn.click();
+      }
+    }
+    productShow(0);
   }
   }
 
@@ -130,7 +138,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-
   const observerOptions = {
     threshold: 0.1,
   };
@@ -150,7 +157,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   });
 
-
 function signup() {
   const fname = document.getElementById("fname");
   const lname = document.getElementById("lname");
@@ -160,7 +166,6 @@ function signup() {
   const cpassword = document.getElementById("cpassword") || document.getElementById("cPassword");
   const msg = document.getElementById("msg");
   const msgdiv = document.getElementById("msgdiv");
-
 
   if (!fname || !lname || !email || !password || !cpassword) {
     showAlert("Please fill in all required fields.", "warning");
@@ -213,15 +218,12 @@ function signup() {
   request.send(form);
 }
 
-
-
 function signIn() {
   var email = document.getElementById("email");
   var password = document.getElementById("password");
   var rememberMe = document.getElementById("rememberMe");
   var msg = document.getElementById("msg");
   var msgdiv = document.getElementById("msgdiv");
-
 
   if (!email || !password) {
     showAlert("Please enter your Email and Password.", "warning");
@@ -313,7 +315,6 @@ function updateSetting() {
   var pCode = document.getElementById("postalCode"); 
   var mobile = document.getElementById("phoneNumber");
 
-
   if (!fName || !lName || !line1 || !pCode || !mobile) {
     showAlert("Required form elements are missing.", "warning");
     return;
@@ -346,7 +347,6 @@ function updateSetting() {
   request.send(form);
 }
 
-
 function passwordChange(){
 
   var cPassword = document.getElementById("currentPassword");
@@ -367,7 +367,6 @@ function passwordChange(){
 
   form.append("c",cPassword.value);
   form.append("n",nPassword.value);
-
 
   const request = new XMLHttpRequest()
 
@@ -393,7 +392,6 @@ function passwordChange(){
 function productShow(categoryId) {
   var productContainer = document.getElementById("productContainer");
 
-  // Visual feedback: briefly dim the container while fetching
   if (productContainer) {
     productContainer.style.opacity = "0.4";
   }
@@ -426,11 +424,9 @@ function searchProducts() {
     }
   };
 
-  // Send search query via GET to loadProductsProcess.php
   request.open("GET", "loadProductsProcess.php?search=" + encodeURIComponent(searchText), true);
   request.send();
 }
-
 
 let currentCategory = 0;
 let currentSort = "newest";
@@ -441,7 +437,7 @@ function changePage(pageNo) {
   if (pageNo < 1) return;
   currentPage = pageNo;
   filterProducts();
-  // Smooth scroll back to top of products
+
   document.getElementById("productContainer")?.scrollIntoView({ behavior: "smooth" });
 }
 
@@ -499,13 +495,11 @@ function filterProducts() {
   request.send();
 }
 
-
 function buyNow(productId) {
   const qtyElement = document.getElementById("qtyVal");
   const qty = qtyElement ? parseInt(qtyElement.textContent) || 1 : 1;
   window.location.href = "checkout.php?id=" + productId + "&qty=" + qty;
 }
-
 
 function placeOrder() {
   const email = document.getElementById("email");
@@ -695,10 +689,6 @@ function executeRemoveCartItem(cartItemId) {
   request.send(form);
 }
 
-// --------------------------------------------------------
-// Wishlist & Dashboard Actions (Handles root and user/ paths)
-// --------------------------------------------------------
-
 function removeFromWishlist(wishlistId) {
   if (typeof Swal !== "undefined") {
     Swal.fire({
@@ -809,7 +799,6 @@ function shareWishlist() {
   }
 }
 
-// Filter recent orders table on dashboard
 function filterRecentOrders() {
   const input = document.getElementById("orderSearchInput");
   if (!input) return;
@@ -831,10 +820,6 @@ function filterRecentOrders() {
 function removeWishlistItem(wishlistId) {
   removeFromWishlist(wishlistId);
 }
-
-// --------------------------------------------------------
-// Orders Page Filtering (Live Search & Status Filter)
-// --------------------------------------------------------
 
 function filterOrders() {
   const input = document.getElementById("orderSearchInput");
@@ -925,14 +910,9 @@ function toggleWishlist(productId, btnElement) {
   request.send(form);
 }
 
-// --------------------------------------------------------
-// Admin Product Inventory, Gallery & Modal Management
-// --------------------------------------------------------
-
 let deletedImageIds = [];
 let currentExistingCount = 0;
 
-// Filter products by status (All, Active, Draft)
 function filterAdminProducts(statusFilter) {
   const url = new URL(window.location.href);
   url.searchParams.set("status", statusFilter);
@@ -984,7 +964,6 @@ function executeDeleteProduct(productId) {
   req.send(form);
 }
 
-// Reset Add Product Modal state
 function resetAddModal() {
   const form = document.getElementById("addProductModalForm");
   const previewBox = document.getElementById("add_preview_box");
@@ -992,7 +971,21 @@ function resetAddModal() {
   if (previewBox) previewBox.innerHTML = "";
 }
 
-// Preview selected files for Add Modal & assign primary index
+function removeImagePreview(inputId, removeIdx) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
+  
+  const dt = new DataTransfer();
+  for (let i = 0; i < input.files.length; i++) {
+    if (i !== parseInt(removeIdx)) {
+      dt.items.add(input.files[i]);
+    }
+  }
+  
+  input.files = dt.files;
+  input.dispatchEvent(new Event('change'));
+}
+
 function handleNewImagesPreview(input, previewContainerId, radioGroupName) {
   const container = document.getElementById(previewContainerId);
   if (!container) return;
@@ -1011,8 +1004,7 @@ function handleNewImagesPreview(input, previewContainerId, radioGroupName) {
       card.className = "card p-2 text-center shadow-sm position-relative";
       card.style.width = "120px";
 
-      card.innerHTML = `
-        <img src="${e.target.result}" style="width: 100%; height: 85px; object-fit: cover; border-radius: 4px;" class="mb-2">
+      card.innerHTML = `\n        <button type="button" class="btn-close position-absolute top-0 start-100 translate-middle bg-light rounded-circle border border-dark" style="padding: 4px; font-size: 10px; z-index: 10;" onclick="removeImagePreview('${input.id}', ${idx})"></button>\n        <img src="${e.target.result}" style="width: 100%; height: 85px; object-fit: cover; border-radius: 4px;" class="mb-2">
         <div class="form-check d-flex align-items-center justify-content-center gap-1">
           <input class="form-check-input" type="radio" name="${radioGroupName}" value="${idx}" ${idx === 0 ? "checked" : ""}>
           <label class="form-check-label small" style="font-size: 11px;">Primary</label>
@@ -1054,7 +1046,6 @@ function submitAddProductModal() {
   req.send(formData);
 }
 
-// Open Edit Modal with full gallery & primary radio options
 function openEditModal(productId) {
   deletedImageIds = [];
   const delInput = document.getElementById("edit_deleted_images");
@@ -1122,7 +1113,6 @@ function openEditModal(productId) {
   req.send();
 }
 
-// Mark image for deletion in Edit Modal
 function markImageDelete(imageId) {
   if (typeof Swal !== "undefined") {
     Swal.fire({
@@ -1163,7 +1153,6 @@ function updateEditUploadLimitNotice() {
   }
 }
 
-// Handle additional new images in Edit Modal
 function handleEditAdditionalImages(input) {
   const allowed = 5 - currentExistingCount;
   const previewBox = document.getElementById("edit_new_preview_box");
@@ -1183,8 +1172,7 @@ function handleEditAdditionalImages(input) {
       card.className = "card p-2 text-center shadow-sm position-relative border-primary";
       card.style.width = "125px";
 
-      card.innerHTML = `
-        <span class="badge bg-primary position-absolute top-0 start-0 m-1" style="font-size: 9px;">New</span>
+      card.innerHTML = `\n        <button type="button" class="btn-close position-absolute top-0 start-100 translate-middle bg-light rounded-circle border border-dark" style="padding: 4px; font-size: 10px; z-index: 10;" onclick="removeImagePreview('${input.id}', ${idx})"></button>\n        <span class="badge bg-primary position-absolute top-0 start-0 m-1" style="font-size: 9px;">New</span>
         <img src="${e.target.result}" style="width: 100%; height: 85px; object-fit: cover; border-radius: 4px;" class="mb-2">
         <div class="form-check d-flex align-items-center justify-content-center gap-1">
           <input class="form-check-input" type="radio" name="primary_image_choice" value="new_${idx}">
@@ -1221,9 +1209,7 @@ function submitEditProductModal() {
   req.send(formData);
 }
 
-// --------------------------------------------------------
 // Admin Order Management Functions
-// --------------------------------------------------------
 
 function filterAdminOrdersTable() {
   const searchInput = document.getElementById("adminOrderSearchInput");
@@ -1346,9 +1332,7 @@ function submitUserRoleUpdate() {
   req.send(formData);
 }
 
-// --------------------------------------------------------
 // Admin Settings Handlers
-// --------------------------------------------------------
 
 function submitAdminAccountUpdate() {
   const form = document.getElementById("adminAccountForm");
@@ -1396,9 +1380,8 @@ function submitAdminPasswordChange() {
   req.send(formData);
 }
 
-// --------------------------------------------------------
 // Customer Product Review Submission
-// --------------------------------------------------------
+
 function submitProductReview() {
   const form = document.getElementById("productReviewForm");
   if (!form) return;
@@ -1428,3 +1411,49 @@ function submitProductReview() {
   req.open("POST", endpoint, true);
   req.send(formData);
 }
+function sendContact(event) {
+  event.preventDefault();
+  
+  const name = document.getElementById('userName').value;
+  const email = document.getElementById('userEmail').value;
+  const subject = document.getElementById('subjectSelect').value;
+  const message = document.getElementById('userMessage').value;
+
+  if (!name || !email || !message) {
+    showAlert('Please fill out all required fields.', 'warning');
+    return;
+  }
+
+  const form = new FormData();
+  form.append('userName', name);
+  form.append('userEmail', email);
+  form.append('subjectSelect', subject);
+  form.append('userMessage', message);
+
+  const request = new XMLHttpRequest();
+  request.onreadystatechange = function () {
+    if (request.readyState === 4 && request.status === 200) {
+      try {
+        const response = JSON.parse(request.responseText.trim());
+        if (response.status === 'success') {
+          showAlert(response.message, 'success', 'Message Sent');
+          document.getElementById('contactForm').reset();
+        } else {
+          showAlert(response.message, 'error');
+        }
+      } catch (e) {
+        const res = request.responseText.trim();
+        if(res === 'success') {
+             showAlert('Message Sent successfully!', 'success', 'Message Sent');
+             document.getElementById('contactForm').reset();
+        } else {
+             showAlert(res, 'error');
+        }
+      }
+    }
+  };
+
+  request.open('POST', 'contactProcess.php', true);
+  request.send(form);
+}
+

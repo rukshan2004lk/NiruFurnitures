@@ -69,14 +69,6 @@ include 'header.php';
             </div>
           </div>
 
-          <!-- Terms Checkbox -->
-          <div class="form-check my-2">
-            <input class="form-check-input" type="checkbox" id="termsCheck" required>
-            <label class="form-check-label small" for="termsCheck" style="color: var(--niru-body-text);">
-              I agree to the <a href="#" class="fw-semibold text-decoration-none" style="color: var(--niru-primary);">Terms of Service</a> and <a href="#" class="fw-semibold text-decoration-none" style="color: var(--niru-primary);">Privacy Policy</a>.
-            </label>
-          </div>
-
           <!-- Submit Button -->
           <button type="button" onclick="signup();" class="btn-auth-primary">
             Create Account <i class="bi bi-arrow-right"></i>
@@ -86,7 +78,6 @@ include 'header.php';
         <div id="msgdiv" class="d-none">
           <div id="msg" role="alert"></div>
         </div>
-
 
         <div class="text-center pt-2">
           <p class="small mb-0" style="color: var(--niru-body-text);">

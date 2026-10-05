@@ -18,7 +18,6 @@ if ($order_id <= 0 || !in_array($status_id, $allowed_statuses, true)) {
     exit("Invalid order or status.");
 }
 
-// Verify status exists in database
 $check_status = Database::search("SELECT `status_id` FROM `status` WHERE `status_id` = '$status_id'");
 if ($check_status->num_rows === 0) {
     exit("Status not found.");

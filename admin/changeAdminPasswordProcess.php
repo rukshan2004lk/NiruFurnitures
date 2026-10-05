@@ -40,7 +40,6 @@ if (!password_verify($current_password, $stored_hash) && $current_password !== $
     exit("Incorrect current password.");
 }
 
-// Hash and update new password
 $new_hash = password_hash($new_password, PASSWORD_BCRYPT);
 Database::iud("UPDATE `user` SET `password_hash` = '$new_hash' WHERE `user_id` = '$user_id'");
 

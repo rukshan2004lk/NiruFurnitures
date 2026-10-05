@@ -1207,10 +1207,7 @@ footer {
       justify-content: space-between;
     }
 
-.admin-content-canvas {
-      padding: 48px;
-      max-width: 1280px;
-    }
+.admin-content-canvas { padding: 48px; max-width: 100%; }
 
 .action-bar-card {
       background-color: #ffffff;
@@ -1832,7 +1829,7 @@ footer {
       justify-content: center;
     }
 
-.dashboard-main {
+.dashboard-main { background-color: var(--niru-bg-alt);
       margin-left: 256px;
       padding: 40px;
       min-height: 100vh;
@@ -1844,7 +1841,7 @@ footer {
         width: 100%;
         height: auto;
       }
-      .dashboard-main {
+      .dashboard-main { background-color: var(--niru-bg-alt);
         margin-left: 0;
         padding: 24px;
       }
@@ -2075,14 +2072,14 @@ footer {
       margin-top: auto;
     }
 
-.orders-main {
+.orders-main { background-color: var(--niru-bg-alt);
       margin-left: 256px;
       min-height: 100vh;
     }
 
 .orders-container {
       padding: 48px;
-      max-width: 1200px;
+      max-width: 100%;
     }
 
 .summary-card {
@@ -2199,7 +2196,7 @@ footer {
       margin-bottom: 16px;
     }
 
-.dashboard-main {
+.dashboard-main { background-color: var(--niru-bg-alt);
       margin-left: 256px;
       padding: 40px 60px;
       min-height: 100vh;
@@ -2443,7 +2440,7 @@ html, body {
     display: none;
   }
 
-  .dashboard-main, .admin-main, .orders-main {
+  .dashboard-main, .admin-main, .orders-main { background-color: var(--niru-bg-alt);
     margin-left: 0 !important;
     padding: 20px 16px !important;
   }
@@ -2703,3 +2700,4 @@ html, body {
     border-color: #d8b1a7;
     color: #633328 !important;
 }
+
