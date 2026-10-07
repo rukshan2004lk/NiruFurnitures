@@ -790,14 +790,7 @@ function addAllToCart() {
   });
 }
 
-function shareWishlist() {
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(window.location.href);
-    showAlert("Wishlist link copied to clipboard!", "success");
-  } else {
-    prompt("Copy your wishlist link:", window.location.href);
-  }
-}
+
 
 function filterRecentOrders() {
   const input = document.getElementById("orderSearchInput");

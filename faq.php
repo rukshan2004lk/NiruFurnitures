@@ -28,7 +28,7 @@ include 'header.php';
           </h2>
           <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
             <div class="accordion-body text-muted lh-lg">
-              Standard in-stock furniture items ship within 3–5 business days. White-glove in-home assembly and packaging removal are included for all dining tables, sofas, and bedframes. You will receive real-time SMS tracking updates prior to delivery.
+              Standard in-stock furniture items ship within 3–5 business days. White glove in home assembly and packaging removal are included for all dining tables, sofas, and bedframes. You will receive real-time SMS tracking updates prior to delivery.
             </div>
           </div>
         </div>
@@ -41,7 +41,7 @@ include 'header.php';
           </h2>
           <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
             <div class="accordion-body text-muted lh-lg">
-              We offer a 30-day risk-free in-home trial. If you are not completely satisfied with your furniture, we will arrange a complimentary pickup and full refund. Furthermore, all solid wood frames are backed by our 10-Year Craftsmanship Guarantee.
+              We offer a 30 day risk free in home trial. If you are not completely satisfied with your furniture, we will arrange a complimentary pickup and full refund. Furthermore, all solid wood frames are backed by our 10-Year Craftsmanship Guarantee.
             </div>
           </div>
         </div>
@@ -54,7 +54,7 @@ include 'header.php';
           </h2>
           <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
             <div class="accordion-body text-muted lh-lg">
-              For solid oak and ash wood, wipe with a damp microfiber cloth and reapply organic beeswax polish every 6–12 months. Upholstery fabrics are stain-resistant and can be spot cleaned using mild water-based detergent.
+              For solid oak and ash wood, wipe with a damp microfiber cloth and reapply organic beeswax polish every 6–12 months. Upholstery fabrics are stain resistant and can be spot cleaned using mild water based detergent.
             </div>
           </div>
         </div>

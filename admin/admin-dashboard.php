@@ -136,9 +136,7 @@ $recent_orders_rs = Database::search($recent_orders_query);
       </div>
 
       <div class="d-flex gap-2">
-        <button class="btn btn-light border d-flex align-items-center gap-2 px-3 py-2 fw-semibold" style="background-color: #f0eded; color: var(--niru-primary);" onclick="window.location.reload();">
-          <i class="bi bi-arrow-clockwise"></i> Refresh Data
-        </button>
+  
         <button class="btn btn-dark d-flex align-items-center gap-2 px-4 py-2 fw-semibold" style="background-color: var(--niru-primary);" onclick="window.print();">
           <i class="bi bi-printer"></i> Print Overview
         </button>
