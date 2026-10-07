@@ -14,7 +14,7 @@ $last_name  = htmlspecialchars($user['last_name'] ?? '');
 $email      = htmlspecialchars($user['email'] ?? '');
 $initials   = strtoupper(substr($first_name, 0, 1) . substr($last_name, 0, 1));
 
-$wishlist_query = "SELECT w.wishlist_id, p.product_id, p.name, p.price, p.short_description, c.name AS category_name,
+$wishlist_query = "SELECT w.wishlist_id, p.product_id, p.name, p.price, p.description, c.name AS category_name,
                           (SELECT image_path FROM product_images WHERE product_id = p.product_id ORDER BY is_primary DESC, sort_order ASC LIMIT 1) AS image_path 
                    FROM `wishlists` w 
                    INNER JOIN `products` p ON w.product_id = p.product_id 
@@ -128,9 +128,7 @@ $wishlist_count = $wishlist_rs->num_rows;
 
       <?php if ($wishlist_count > 0) { ?>
         <div class="d-flex align-items-center gap-2 flex-shrink-0">
-          <button type="button" class="btn btn-outline-secondary rounded-pill px-3 py-2 btn-sm" onclick="shareWishlist();">
-            <i class="bi bi-share me-1"></i> Share List
-          </button>
+        
           <button type="button" class="btn btn-niru-primary rounded-pill px-3 py-2 btn-sm" onclick="addAllToCart();">
             <i class="bi bi-bag-plus me-1"></i> Add All to Cart
           </button>
@@ -169,7 +167,7 @@ $wishlist_count = $wishlist_rs->num_rows;
                     <span class="fs-5 fw-semibold" style="color: var(--niru-primary);">Rs. <?php echo number_format($item['price'], 2); ?></span>
                   </div>
                   <p class="small text-muted mb-4">
-                    <?php echo htmlspecialchars($item['short_description'] ?? 'Sculptural elegance meets ergonomic comfort.'); ?>
+                    <?php echo htmlspecialchars(substr($item['description'] ?? 'Sculptural elegance meets ergonomic comfort.', 0, 60)) . '...'; ?>
                   </p>
                 </div>
                 <div class="d-flex gap-2">

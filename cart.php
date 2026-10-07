@@ -13,7 +13,7 @@ $user = $_SESSION['u'];
 $user_id = (int)$user['user_id'];
 
 $query = "SELECT ci.cart_item_id, ci.product_id, ci.quantity, ci.unit_price, 
-                 p.name AS product_name, p.slug, 
+                 p.name AS product_name, 
                  (SELECT image_path FROM product_images WHERE product_id = p.product_id ORDER BY is_primary DESC, sort_order ASC LIMIT 1) AS image_path 
           FROM `carts` c 
           INNER JOIN `cart_items` ci ON c.cart_id = ci.cart_id 
